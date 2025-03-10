@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoChevronBackSharp } from "react-icons/io5";
+
 const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +23,7 @@ const LogIn = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message);
+        setError("Invalid email or password");
       } else {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
@@ -36,7 +37,9 @@ const LogIn = () => {
   return (
     <>
       <div className="bg-gradient-to-bl from-[#053F5E] to-gray-100 to-teal-100 bg-cover bg-center h-screen w-full">
-        <Link to="/"><IoChevronBackSharp className='text-[#0B192C] bg-white/80 p-1 text-4xl border-1 rounded-full fixed top-4 left-4'/></Link>
+        <Link to="/">
+          <IoChevronBackSharp className='text-[#0B192C] bg-white/80 p-1 text-4xl border-1 rounded-full fixed top-4 left-4'/>
+        </Link>
         <div className="flex justify-center items-center min-h-screen">
           <div className="w-full max-w-lg h-auto p-8 shadow-2xl bg-white/70 rounded-3xl backdrop-blur-md">
             <h2 className="text-3xl font-bold text-center mb-6 text-[#0B192C]">Unlock Study Mode!</h2>
@@ -49,7 +52,10 @@ const LogIn = () => {
                   placeholder="Enter your email"
                   className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2CA4BF]"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setError("");
+                  }}
                   required
                 />
               </div>
@@ -61,10 +67,16 @@ const LogIn = () => {
                   placeholder="Enter your password"
                   className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setError("");
+                  }}
                   required
                 />
-              <div><Link to="/smail" className="text-[#2CA4BF] font-medium text-sm hover:underline ml-1">Forgot Password?</Link></div>
+                {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+                <div>
+                  <Link to="/smail" className="text-[#2CA4BF] font-medium text-sm hover:underline ml-2">Forgot Password?</Link>
+                </div>
               </div>
               <button
                 type="submit"

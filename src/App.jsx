@@ -4,8 +4,9 @@ import LogIn from "./components/LogIn";
 import SignUp from "./components/SignUp";
 import Dashboard from "./components/Dashboard";
 import { Navigate, Outlet } from "react-router-dom";
-import ForgetPwd from "./components/ForgetPwd";
 import SendMail from "./components/SendMail";
+import ResetPwd from "./components/ResetPwd";
+import EmailCode from "./components/EmailCode";
 
 const PrivateRoute = () => {
     const token = localStorage.getItem("token");
@@ -20,8 +21,9 @@ function App() {
         <Route path="/" element={<FrontPage />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/fpwd" element={<ForgetPwd/>} />
+        <Route path="/resetpwd" element={<ResetPwd/>} />
         <Route path="/smail" element={<SendMail/>} />
+        <Route path="/emailcode" element={<EmailCode/>}/>
         
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
