@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom';
 import { IoChevronBackSharp } from "react-icons/io5";
+import { Country, State } from "country-state-city";
+
+
 const SignUp = () => {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate(); // Initialize navigation
     const [step, setStep] = useState(1);
     const [completedSteps, setCompletedSteps] = useState(0);
     const [formData, setFormData] = useState({
@@ -76,7 +79,11 @@ const SignUp = () => {
 
         if (response.ok) {
             console.log("Signup Success:", data);
+
+            // ✅ Store the token in localStorage
             localStorage.setItem("token", data.token);
+
+            // ✅ Navigate to dashboard
             navigate("/dashboard");
         } else {
             console.log("Signup Failed:", data.message);
@@ -129,11 +136,42 @@ const SignUp = () => {
                 </label>
                 <label className="flex items-center">
                   <span className="w-40">Country:</span>
-                  <input type="text" name="Country" value={formData.Country} onChange={handleChange} className="border p-2 rounded-lg w-full" required />
+                  <select
+                  name="Country"
+                  value={formData.Country}
+                  onChange={(e) => {
+                    setFormData({ ...formData, Country: e.target.value, State: "" });
+                  }}
+                  className="border p-2 rounded-lg w-full"
+                  required
+                  >
+                  <option value="">Select Country</option>
+                  {Country.getAllCountries().map((country) => (
+                    <option key={country.isoCode} value={country.isoCode}>
+                      {country.name}
+                    </option>
+                  ))}
+                  </select>
+                  {/* <input type="text" name="Country" value={formData.Country} onChange={handleChange} className="border p-2 rounded-lg w-full" required /> */}
                 </label>
                 <label className="flex items-center">
                   <span className="w-40">State:</span>
-                  <input type="text" name="State" value={formData.State} onChange={handleChange} className="border p-2 rounded-lg w-full" required />
+                  <select
+                    name="State"
+                    value={formData.State}
+                    onChange={(e) => setFormData({ ...formData, State: e.target.value })}
+                    className="border p-2 rounded-lg w-full"
+                    required
+                    disabled={!formData.Country} // Disable until country is selected
+                  >
+                    <option value="">Select State</option>
+                    {State.getStatesOfCountry(formData.Country).map((state) => (
+                      <option key={state.isoCode} value={state.name}>
+                        {state.name}
+                      </option>
+                    ))}
+                  </select>
+                  {/* <input type="text" name="State" value={formData.State} onChange={handleChange} className="border p-2 rounded-lg w-full" required /> */}
                 </label>
               </div>
             </div>
