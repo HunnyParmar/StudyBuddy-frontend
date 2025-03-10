@@ -3,19 +3,23 @@ import axios from "axios";
 import { useState } from "react";
 
 const SendMail = () => {
-
   const [email, setEmail] = useState("");
 
   const handleSendCode = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:7000/user/send-reset-code", { Email: email });
-      alert(response.data.message);
-      window.location.href = "/emailcode";
+
+      if (response.status === 200) {
+        localStorage.setItem("resetEmail", email); // ✅ Save email in localStorage
+        alert(response.data.message);
+        window.location.href = "/emailcode"; // Navigate to the next page
+      }
     } catch (error) {
       alert("Error sending reset code");
     }
   };
+
 
   return (
     <>
