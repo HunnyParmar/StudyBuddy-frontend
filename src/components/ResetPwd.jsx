@@ -5,6 +5,7 @@ import { useState ,useEffect} from 'react';
 const ResetPwd = () => {
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("resetEmail");
@@ -15,18 +16,25 @@ const ResetPwd = () => {
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:7000/user/reset-password", { Email: email, newPassword });
-
-      if (response.status === 200) {
-        alert(response.data.message);
-        localStorage.removeItem("resetEmail"); // ✅ Remove email from localStorage after reset
-        window.location.href = "/login"; // Navigate to login page
-      }
-    } catch (error) {
-      alert("Error resetting password");
+    
+    // Check if passwords match
+    if (newPassword !== confirmPassword) {
+        alert("Passwords do not match!");
+        return; // Prevent form submission
     }
-  };
+
+    try {
+        const response = await axios.post("http://localhost:7000/user/reset-password", { Email: email, newPassword: newPassword });
+
+        if (response.status === 200) {
+            alert(response.data.message);
+            localStorage.removeItem("resetEmail"); // ✅ Remove email from localStorage after reset
+            window.location.href = "/login"; // Navigate to login page
+        }
+    } catch (error) {
+        alert("Error resetting password");
+    }
+};
 
 
   return (
@@ -43,6 +51,16 @@ const ResetPwd = () => {
                   type="password"
                   placeholder="Enter your password"
                   onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2CA4BF]"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-[#0B192C] font-medium">Confirm Password</label>
+                <input
+                  type="password"
+                  placeholder="Enter your password"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2CA4BF]"
                   required
                 />

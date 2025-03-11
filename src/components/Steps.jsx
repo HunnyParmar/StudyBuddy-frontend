@@ -7,7 +7,7 @@ const Steps = () => {
         <h2 className="text-3xl font-bold text-center text-gray-800 pb-10 ">
           How it Works?
         </h2>
-        <div className="relative flex justify-center gap-11  ">
+        <div className="relative flex justify-center gap-11">
         <Card
             no="Step-1"
             title="Create Your Profile"
@@ -18,14 +18,14 @@ const Steps = () => {
           <Card
             no="Step-2"
             title="Find a Study Buddy"
-            buttonText="Match with students sharing the same goals"
+            buttonText="Match with students sharing the same goals."
             imgSrc="https://img.freepik.com/free-photo/woman-selecting-pictures-people_1134-466.jpg?t=st=1741069841~exp=1741073441~hmac=da118610745037194925292ea4ea2b858382fcf3c480794c21a65975a40e18cb&w=1380"
             rotation="-rotate-2"
           />
           <Card
             no="Step-3"
             title="Join Study Groups & Flashcards"
-            buttonText="Collaborate, discuss, and test knowledge"
+            buttonText="Collaborate, discuss, and test knowledge."
             imgSrc="https://media.istockphoto.com/id/1411110345/photo/side-view-of-a-successful-smart-guy-listening-to-an-online-lecture-taking-notes-in-a-notebook.jpg?s=2048x2048&w=is&k=20&c=TxDfvRr-lDc-XrWKDQTyhYOHkybwjqLsUMmbb-a4cAg="
             rotation="rotate-4"
           />
