@@ -8,7 +8,11 @@ const Dashboard = () => {
   const [token, setToken] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userprofile = JSON.parse(localStorage.getItem("userprofile"));
+  console.log(user);
+  console.log(userprofile);
+  
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
     if (!savedToken) {
@@ -31,8 +35,9 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userData"); // Clear user data if stored
     navigate("/login");
-  };
+};
 
   return (
     token && (
@@ -76,12 +81,13 @@ const Dashboard = () => {
 
             <div className="relative inline-block" ref={dropdownRef}>
               {/* Profile Button */}
-              <button
-                className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center cursor-pointer"
+              <h3>{user}</h3>
+              <img
+                src={`http://localhost:7000/${userprofile}`} // Use backend URL
+                alt="Profile"
+                className="w-10 h-10 rounded-full cursor-pointer"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              >
-                <span className="text-white font-bold">U</span>
-              </button>
+              />
 
               {/* Dropdown Menu */}
               {isDropdownOpen && (

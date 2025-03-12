@@ -26,7 +26,11 @@ const LogIn = () => {
         setError("Invalid email or password");
       } else {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("user", JSON.stringify(data.user.UserName));
+        localStorage.setItem("userprofile", JSON.stringify(data.user.ProfilePicture));
+        // console.log(data.user);
+        // console.log(data.userprofile);
+
         navigate("/dashboard");
       }
     } catch (err) {
