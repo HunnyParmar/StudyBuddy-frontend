@@ -3,18 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { FaCog } from "react-icons/fa";
 import { IoLogOutSharp } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg"
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const user = JSON.parse(localStorage.getItem("user"));
-  const userprofile = JSON.parse(localStorage.getItem("userprofile"));
-  console.log(user);
-  console.log(userprofile);
   
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
+
     if (!savedToken) {
       navigate("/login");
     } else {
@@ -80,14 +78,7 @@ const Dashboard = () => {
             <h1 className="text-xl font-bold text-teal-600">StudyBuddy</h1>
 
             <div className="relative inline-block" ref={dropdownRef}>
-              {/* Profile Button */}
-              <h3>{user}</h3>
-              <img
-                src={`http://localhost:7000/${userprofile}`} // Use backend URL
-                alt="Profile"
-                className="w-10 h-10 rounded-full cursor-pointer"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              />
+             
 
               {/* Dropdown Menu */}
               {isDropdownOpen && (
