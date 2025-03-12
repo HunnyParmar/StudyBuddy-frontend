@@ -1,34 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaCog, FaMoon, FaSun } from "react-icons/fa";
+import { FaCog } from "react-icons/fa";
 import { IoLogOutSharp } from "react-icons/io5";
-
+import { CgProfile } from "react-icons/cg"
 const Dashboard = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
-  const [darkMode, setDarkMode] = useState(localStorage.getItem("theme") === "dark");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
     if (!savedToken) {
-      navigate("/login"); // Redirect if no token
+      navigate("/login");
     } else {
       setToken(savedToken);
     }
+  }, [navigate]);
 
-    // Apply dark mode
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [navigate, darkMode]);
-
-  const toggleDarkMode = () => {
-    const newTheme = darkMode ? "light" : "dark";
-    localStorage.setItem("theme", newTheme);
-    setDarkMode(!darkMode);
-  };
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -39,8 +38,8 @@ const Dashboard = () => {
     token && (
       <div className="flex">
         {/* Sidebar */}
-        <div className="w-56 h-screen bg-gray-200 dark:bg-gray-900 p-5 shadow-lg">
-          <h2 className="text-2xl font-bold text-teal-600 dark:text-teal-400">Menu</h2>
+        <div className="w-56 h-screen bg-gray-200 p-5 shadow-lg">
+          <h2 className="text-2xl font-bold text-teal-600">Menu</h2>
           <ul className="mt-4 space-y-4">
             <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
               <span>Home</span>
@@ -67,43 +66,45 @@ const Dashboard = () => {
               <span>Progress</span>
             </li>
           </ul>
-          <button
-            className="mt-6 flex items-center space-x-2 text-lg text-gray-700 dark:text-gray-300 hover:text-teal-500"
-            onClick={toggleDarkMode}
-          >
-            {darkMode ? <FaSun /> : <FaMoon />}
-            <span>{darkMode ? "Light Mode" : "Dark Mode"}</span>
-          </button>
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-white">
+        <div className="flex-1 min-h-screen bg-gray-100 text-gray-800">
           {/* Navbar */}
-          <nav className="flex justify-between items-center p-4 bg-white dark:bg-gray-800 shadow-md">
-            <h1 className="text-xl font-bold text-teal-600 dark:text-teal-400">StudyBuddy</h1>
+          <nav className="flex justify-between items-center p-4 bg-white shadow-md">
+            <h1 className="text-xl font-bold text-teal-600">StudyBuddy</h1>
 
-            {/* Profile & Settings */}
-            <div className="flex items-center space-x-4">
-              {/* Settings Icon */}
-              <button className="text-gray-600 dark:text-gray-300 text-xl hover:text-teal-500">
-                <FaCog />
-              </button>
-              <button className="text-gray-600 dark:text-gray-300 text-xl hover:text-teal-500" onClick={handleLogout}>
-              <IoLogOutSharp />
-              </button>
-
-              {/* Profile Picture */}
-              <div className="w-10 h-10 bg-gray-400 dark:bg-gray-700 rounded-full flex items-center justify-center cursor-pointer">
-                <span className="text-white font-bold">U</span> {/* Initials or image here */}
-              </div>
-
-              {/* Logout Button
+            <div className="relative inline-block" ref={dropdownRef}>
+              {/* Profile Button */}
               <button
-                className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600"
-                
+                className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center cursor-pointer"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
-                Logout
-              </button> */}
+                <span className="text-white font-bold">U</span>
+              </button>
+
+              {/* Dropdown Menu */}
+              {isDropdownOpen && (
+                <div className="absolute top-full right-0 w-48 bg-white rounded-lg shadow-lg overflow-hidden border border-gray-300">
+                  <ul className="text-gray-700">
+                    <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                      <CgProfile className="inline-block mr-2" />
+                      Profile
+                    </li>
+                    <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                      <FaCog className="inline-block mr-2" />
+                      Settings
+                    </li>
+                    <li
+                      className="px-4 py-2 flex items-center space-x-2 hover:bg-red-500 hover:text-white cursor-pointer"
+                      onClick={handleLogout}
+                    >
+                      <IoLogOutSharp />
+                      <span>Logout</span>
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
           </nav>
 
