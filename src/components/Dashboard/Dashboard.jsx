@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FaCog } from "react-icons/fa";
 import { IoLogOutSharp } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
-
+import { Link } from "react-router-dom";
 const Dashboard = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
@@ -12,7 +12,7 @@ const Dashboard = () => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const savedToken = localStorage.getItem("token"); // Correct key check
+    const savedToken = localStorage.getItem("token"); 
 
     if (!savedToken) {
       navigate("/login");
@@ -24,13 +24,13 @@ const Dashboard = () => {
           const response = await fetch("http://localhost:7000/user/details", {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${savedToken}`, // Add 'Bearer' before token
+              Authorization: `Bearer ${savedToken}`, 
             },
           });
 
           const data = await response.json();
           if (response.ok) {
-            setUserData(data); // Set user data state
+            setUserData(data); 
           } else {
             console.error("Failed to fetch user data:", data.message);
           }
@@ -43,7 +43,7 @@ const Dashboard = () => {
     }
   }, [navigate, setToken, setUserData]);
 
-  // Close dropdown when clicking outside
+ 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -63,31 +63,31 @@ const Dashboard = () => {
   return (
     token && (
       <div className="flex">
-        {/* Sidebar */}
+        
         <div className="w-56 h-screen bg-gray-200 p-4 shadow-lg">
           <h2 className="text-2xl font-bold text-teal-600 pt-4 pb-6">
             StudyBuddy
           </h2>
           <ul className="mt-4 space-y-4">
             <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
-              <span>Home</span>
+              <Link to="/progress">Home</Link>
             </li>
             <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
-              <span>To-Do List</span>
+            <Link to="/todo">To-Do List</Link>
             </li>
             <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
-              <span>FlashCards</span>
+            <Link to="/flashcard">FlashCard</Link>
             </li>
           </ul>
         </div>
 
-        {/* Main Content */}
+        
         <div className="flex-1 min-h-screen bg-gray-100 text-gray-800">
-          {/* Navbar */}
+          
           <nav className="flex justify-between items-center p-3 bg-white shadow-md">
-            <h1 className="text-xl font-bold text-teal-600">StudyBuddy</h1>
+            <h1 className="text-xl font-bold text-teal-600"></h1>
 
-            {/* Profile Section */}
+            
             <div
               className="relative flex items-center cursor-pointer space-x-2"
               ref={dropdownRef}
@@ -103,9 +103,9 @@ const Dashboard = () => {
                 className="w-10 h-10 rounded-full object-cover border border-gray-300"
               />
 
-              {/* Dropdown Menu */}
+             
               {isDropdownOpen && (
-                <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-300 z-50">
+                <div className="absolute top-full right-0 w-48 bg-white rounded-lg shadow-lg border border-gray-300 z-50">
                   <ul className="text-gray-700">
                     <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
                       <CgProfile className="inline-block mr-2" />
