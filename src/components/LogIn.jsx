@@ -20,17 +20,12 @@ const LogIn = () => {
         body: JSON.stringify({ Email: email, Password: password }),
       });
 
-      const data = await response.json();
+      const data = await response.json(); // Extract data from response
 
       if (!response.ok) {
-        setError("Invalid email or password");
+        setError(data.message || "Invalid email or password");
       } else {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user.UserName));
-        localStorage.setItem("userprofile", JSON.stringify(data.user.ProfilePicture));
-        // console.log(data.user);
-        // console.log(data.userprofile);
-
         navigate("/dashboard");
       }
     } catch (err) {
