@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaCog } from "react-icons/fa";
 import { IoLogOutSharp } from "react-icons/io5";
-import { CgProfile } from "react-icons/cg"
+import { CgProfile } from "react-icons/cg";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ const Dashboard = () => {
   const [userData, setUserData] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  
+
   useEffect(() => {
     const savedToken = localStorage.getItem("token"); // Correct key check
 
@@ -18,30 +18,30 @@ const Dashboard = () => {
       navigate("/login");
     } else {
       setToken(savedToken);
-    // Fetch user data
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch("http://localhost:7000/user/details", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${savedToken}`, // Add 'Bearer' before token
-          },
-      });
-      
-        const data = await response.json();
-        if (response.ok) {
-          setUserData(data);  // Set user data state
-        } else {
-          console.error("Failed to fetch user data:", data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
+      // Fetch user data
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch("http://localhost:7000/user/details", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${savedToken}`, // Add 'Bearer' before token
+            },
+          });
 
-    fetchUserData();
-  }
-}, [navigate, setToken, setUserData]);
+          const data = await response.json();
+          if (response.ok) {
+            setUserData(data); // Set user data state
+          } else {
+            console.error("Failed to fetch user data:", data.message);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
+
+      fetchUserData();
+    }
+  }, [navigate, setToken, setUserData]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -60,13 +60,14 @@ const Dashboard = () => {
     navigate("/login");
   };
 
-
   return (
     token && (
       <div className="flex">
         {/* Sidebar */}
         <div className="w-56 h-screen bg-gray-200 p-4 shadow-lg">
-          <h2 className="text-2xl font-bold text-teal-600 pt-4 pb-6">StudyBuddy</h2>
+          <h2 className="text-2xl font-bold text-teal-600 pt-4 pb-6">
+            StudyBuddy
+          </h2>
           <ul className="mt-4 space-y-4">
             <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
               <span>Home</span>
@@ -84,21 +85,27 @@ const Dashboard = () => {
         <div className="flex-1 min-h-screen bg-gray-100 text-gray-800">
           {/* Navbar */}
           <nav className="flex justify-between items-center p-3 bg-white shadow-md">
-            
-            
-            {/* Display Profile Info */}
-            <div className="relative flex items-center cursor-pointer ml-200" ref={dropdownRef} onClick={() => setIsDropdownOpen((prev) => !prev)}>
-            <h1 className="font-medium ml-[4px] mr-4">{userData.UserName || "User"}</h1>
+            <h1 className="text-xl font-bold text-teal-600">StudyBuddy</h1>
+
+            {/* Profile Section */}
+            <div
+              className="relative flex items-center cursor-pointer space-x-2"
+              ref={dropdownRef}
+              onClick={() => setIsDropdownOpen((prev) => !prev)}
+            >
+              <h1 className="font-medium hidden sm:block">
+                {userData.UserName || "User"}
+              </h1>
 
               <img
-                src={`http://localhost:7000/${userData.ProfilePicture}`} // Assuming image is stored as a URL
+                src={`http://localhost:7000/${userData.ProfilePicture}`}
                 alt="Profile"
-                className="w-10 h-10 rounded-full"
+                className="w-10 h-10 rounded-full object-cover border border-gray-300"
               />
 
               {/* Dropdown Menu */}
               {isDropdownOpen && (
-                <div className="absolute top-full right-0 w-48 bg-white rounded-lg shadow-lg overflow-hidden border border-gray-300">
+                <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-300 z-50">
                   <ul className="text-gray-700">
                     <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
                       <CgProfile className="inline-block mr-2" />
