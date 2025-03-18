@@ -8,6 +8,7 @@ import SendMail from "./components/SendMail";
 import ResetPwd from "./components/ResetPwd";
 import EmailCode from "./components/EmailCode";
 import ToDoList from "./components/Dashboard/To-Do List/ToDoList";
+import FlashCard from "./components/Dashboard/FlashCard/FlashCard";
 
 const PrivateRoute = () => {
     const token = localStorage.getItem("token");
@@ -28,7 +29,8 @@ function App() {
         
         <Route element={<PrivateRoute />}>
           <Route exact path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/todo" element={<ToDoList/>} />
+          <Route path="/todo" element={<ToDoList/>} />
+          <Route path="/flashcard" element={<FlashCard/>} />
         </Route>     
          
         </Routes>

@@ -28,12 +28,12 @@ const Dashboard = () => {
             },
           });
 
-          const data = await response.json();
-          if (response.ok) {
-            setUserData(data); 
-          } else {
-            console.error("Failed to fetch user data:", data.message);
+          if (!response.ok) {
+            throw new Error("Failed to fetch user data");
           }
+
+          const data = await response.json();
+          setUserData(data); 
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
@@ -41,9 +41,8 @@ const Dashboard = () => {
 
       fetchUserData();
     }
-  }, [navigate, setToken, setUserData]);
+  }, [navigate]);
 
- 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -56,7 +55,6 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("userData");
     navigate("/login");
   };
 
@@ -97,13 +95,16 @@ const Dashboard = () => {
                 {userData.UserName || "User"}
               </h1>
 
-              <img
-                src={`http://localhost:7000/${userData.ProfilePicture}`}
-                alt="Profile"
-                className="w-10 h-10 rounded-full object-cover border border-gray-300"
-              />
+              {userData.ProfilePicture ? (
+                <img
+                  src={`http://localhost:7000/${userData.ProfilePicture}`}
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                />
+              ) : (
+                <CgProfile className="w-10 h-10 text-gray-500" />
+              )}
 
-             
               {isDropdownOpen && (
                 <div className="absolute top-full right-0 w-48 bg-white rounded-lg shadow-lg border border-gray-300 z-50">
                   <ul className="text-gray-700">
