@@ -82,8 +82,9 @@ const Dashboard = () => {
         
         <div className="flex-1 min-h-screen bg-gray-100 text-gray-800">
           
-          <nav className="flex justify-between items-center p-3 bg-white shadow-md">
-            <h1 className="text-xl font-bold text-teal-600"></h1>
+        <nav className="fixed top-0 left-56 right-0 flex justify-between items-center p-3 bg-white shadow-md z-50">
+
+            <span></span>
 
             
             <div
