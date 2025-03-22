@@ -7,9 +7,10 @@ import { Navigate, Outlet } from "react-router-dom";
 import SendMail from "./components/SendMail";
 import ResetPwd from "./components/ResetPwd";
 import EmailCode from "./components/EmailCode";
-import ToDoList from "./components/Dashboard/To-Do List/ToDoList";
+import ToDoList from "./components/Dashboard/ToDoList/ToDoList";
 import FlashCard from "./components/Dashboard/FlashCard/FlashCard";
 import SetFlashCard from "./components/Dashboard/FlashCard/SetFlashCard";
+
 
 const PrivateRoute = () => {
     const token = localStorage.getItem("token");
