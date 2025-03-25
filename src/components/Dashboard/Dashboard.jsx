@@ -62,7 +62,7 @@ const Dashboard = () => {
     token && (
       <div className="flex">
         
-        <div className="w-56 h-screen bg-gray-200 p-4 shadow-lg">
+        <div className="w-56 h-screen bg-gray-100/50 p-4 shadow-lg">
           <h2 className="text-2xl font-bold text-teal-600 pt-4 pb-6">
             StudyBuddy
           </h2>

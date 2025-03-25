@@ -10,6 +10,7 @@ import EmailCode from "./components/EmailCode";
 import ToDoList from "./components/Dashboard/ToDoList/ToDoList";
 import FlashCard from "./components/Dashboard/FlashCard/FlashCard";
 import SetFlashCard from "./components/Dashboard/FlashCard/SetFlashCard";
+import GenerateFlashCard from "./components/Dashboard/FlashCard/GenerateFlashCard";
 
 
 const PrivateRoute = () => {
@@ -35,8 +36,8 @@ function App() {
           {/* FlashCard */}
           <Route path="/flashcard" element={<FlashCard/>} />
           <Route path="/setflashcard" element={<SetFlashCard/>} />
+          <Route path="/generatecard" element={<GenerateFlashCard/>} />
         </Route>     
-         
         </Routes>
     </Router>
   );

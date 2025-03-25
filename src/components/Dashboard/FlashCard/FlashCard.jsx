@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Dashboard from "../Dashboard";
 import { Link } from "react-router-dom";
-import FlashCardModal from "./FlashCardModal"; // Import modal
+import FlashCardModal from "./FlashCardModal"; 
 
 const FlashCard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

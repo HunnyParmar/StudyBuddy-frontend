@@ -5,7 +5,7 @@ const FlashCardModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center bg-[#053F5E]/60 justify-center z-50">
+    <div className="fixed inset-0 flex items-center bg-[#0B192C]/80 justify-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <button
           onClick={onClose}
@@ -18,7 +18,7 @@ const FlashCardModal = ({ isOpen, onClose }) => {
         </h2>
         <div className="mt-4 flex flex-col gap-4">
           <Link
-            to=""
+            to="/generatecard"
             className="text-center w-full py-3 bg-blue-100 rounded-lg shadow-md transition-transform transform hover:scale-105 hover:shadow-lg"
           >
             Generate from an upload
