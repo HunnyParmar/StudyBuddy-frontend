@@ -40,37 +40,49 @@ const ToDoList = () => {
 
   const updateTask = async (id, updatedTaskData) => {
     try {
+      console.log("Updating Task ID:", id, "with data:", updatedTaskData); // Debugging
+  
       const response = await axios.put(
         `http://localhost:7000/user/tasks/${id}`,
         updatedTaskData,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
-          }
+            "Content-Type": "application/json",
+          },
         }
       );
+  
+      console.log("Task Updated Successfully:", response.data);
+  
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
           task._id === id ? { ...task, ...updatedTaskData } : task
         )
       );
     } catch (error) {
-      console.error("Error updating task:", error);
+      console.error("Error updating task:", error.response?.data || error.message);
     }
   };
+  
 
   const deleteTask = async (id) => {
     try {
+      console.log("Deleting Task ID:", id); // ✅ Debugging
+
       await axios.delete(`http://localhost:7000/user/tasks/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         }
       });
+
       setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));
+      console.log("Task Deleted Successfully");
     } catch (error) {
-      console.error("Error deleting task:", error);
+      console.error("Error deleting task:", error.response?.data || error.message);
     }
-  };
+};
+
 
   // ✅ Add this function to handle drag-and-drop
   const handleDragEnd = (event) => {
