@@ -19,7 +19,7 @@ function TaskList({ tasks, setTasks }) {
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-4 ml-[260px] mt-4">
           {tasks.map((task) => (
             <TaskCard key={task.id} task={task} />
           ))}

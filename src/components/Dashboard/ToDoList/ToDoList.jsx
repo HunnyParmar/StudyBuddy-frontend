@@ -83,8 +83,6 @@ const ToDoList = () => {
     }
 };
 
-
-  // ✅ Add this function to handle drag-and-drop
   const handleDragEnd = (event) => {
     const { active, over } = event;
 

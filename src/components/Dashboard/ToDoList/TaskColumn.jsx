@@ -13,7 +13,8 @@ const TaskColumn = ({ id, title, tasks, updateTask, deleteTask  }) => {
   };
 
   return (
-    <div ref={setNodeRef} className="p-4 border rounded-lg shadow-md">
+    
+    <div ref={setNodeRef} className="p-4 border rounded-lg shadow-md w-full">
       <h3 className={`text-lg font-bold mb-2 ${colorClasses[title]} text-white p-2 rounded-md`}>
         {title}
       </h3>

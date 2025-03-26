@@ -10,7 +10,7 @@ const FlashCard = () => {
     <div className="flex h-screen">
       <Dashboard />
 
-      <div className="flex-1 flex flex-col items-center justify-center bg-gray-100 overflow-auto p-6 pt-5 md:pt-10">
+      <div className="flex-1 flex flex-col items-center justify-center bg-gray-100 overflow-auto p-6 pt-5 md:pt-10 pl-65">
         <h1 className="text-4xl font-bold text-gray-800">FlashCard</h1>
         <p className="text-gray-600 mt-2">
           Find flashcard sets, classes, users, and more.

@@ -1,6 +1,6 @@
 // TaskForm.jsx
 import { useState } from "react";
-
+import Dashboard from "../Dashboard";
 const TaskForm = ({ addTask }) => {
   const [task, setTask] = useState({
     title: "",
@@ -22,8 +22,11 @@ const TaskForm = ({ addTask }) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-      <h2 className="text-2xl font-bold mb-4">Task Management</h2>
+    <div className="flex h-screen">
+      <Dashboard />
+
+      <div className="flex-1 flex flex-col items-left justify-center bg-gray-100 overflow-auto p-6 pl-55 md:pt-1">
+      <h2 className="text-3xl font-bold mb-4">Task Management</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-3 gap-4">
         <div>
           <label className="block font-medium">Title</label>
@@ -95,6 +98,7 @@ const TaskForm = ({ addTask }) => {
           </button>
         </div>
       </form>
+    </div>
     </div>
   );
 };

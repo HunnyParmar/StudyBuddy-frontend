@@ -15,7 +15,7 @@ const SetFlashCard = () => {
     };
   
     return (
-      <div className="max-w-full px-15 py-6 bg-[#EBE8DB]/50 min-h-screen">
+      <div className="max-w-full px-15 py-6 bg-[#EBE8DB]/25 min-h-screen">
         <Link to="/flashcard">
           <IoChevronBackSharp className='text-[#0B192C] bg-white/80 p-1 text-3xl border-1 rounded-full fixed top-2 left-2'/>
         </Link>
@@ -61,7 +61,7 @@ const SetFlashCard = () => {
         ))}
   
         {/* Add Flashcard Button */}
-        <button onClick={addFlashcard} className="cursor-pointer mt-6 px-6 py-2 bg-teal-700 text-white rounded-lg shadow">
+        <button onClick={addFlashcard} className="cursor-pointer mt-6 px-6 py-2 bg-teal-700 text-white rounded-lg shadow hover:border-teal-700 hover:text-teal-800 hover:bg-white border-2">
           + Add Flashcard
         </button>
       </div>
