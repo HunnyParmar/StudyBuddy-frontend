@@ -11,6 +11,7 @@ import ToDoList from "./components/Dashboard/ToDoList/ToDoList";
 import FlashCard from "./components/Dashboard/FlashCard/FlashCard";
 import SetFlashCard from "./components/Dashboard/FlashCard/SetFlashCard";
 import GenerateFlashCard from "./components/Dashboard/FlashCard/GenerateFlashCard";
+import Quiz from "./components/Dashboard/Quiz/Quiz";
 
 
 const PrivateRoute = () => {
@@ -37,6 +38,8 @@ function App() {
           <Route path="/flashcard" element={<FlashCard/>} />
           <Route path="/setflashcard" element={<SetFlashCard/>} />
           <Route path="/generatecard" element={<GenerateFlashCard/>} />
+          {/* Quiz */}
+          <Route path="/quiz" element={<Quiz/>} />
         </Route>     
         </Routes>
     </Router>

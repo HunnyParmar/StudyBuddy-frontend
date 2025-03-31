@@ -76,6 +76,9 @@ const Dashboard = () => {
             <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
             <Link to="/flashcard">FlashCard</Link>
             </li>
+            <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
+            <Link to="/quiz">Quiz</Link>
+            </li>
           </ul>
         </div>
 
