@@ -40,7 +40,7 @@ const ToDoList = () => {
 
   const updateTask = async (id, updatedTaskData) => {
     try {
-      console.log("Updating Task ID:", id, "with data:", updatedTaskData); // Debugging
+      console.log("Updating Task ID:", id, "with data:", updatedTaskData);
   
       const response = await axios.put(
         `http://localhost:7000/user/tasks/${id}`,
@@ -68,7 +68,7 @@ const ToDoList = () => {
 
   const deleteTask = async (id) => {
     try {
-      console.log("Deleting Task ID:", id); // ✅ Debugging
+      console.log("Deleting Task ID:", id); 
 
       await axios.delete(`http://localhost:7000/user/tasks/${id}`, {
         headers: {

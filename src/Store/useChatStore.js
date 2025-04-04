@@ -2,13 +2,13 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useAuthStore } from "./useAuthStore";
-// Get token from localStorage once
+
 const token = localStorage.getItem("token");
 
-// Create a global axios instance with token
+
 const api = axios.create({
-  baseURL: "http://localhost:7000/user", // Base URL for API requests
-  headers: { Authorization: `Bearer ${token}` }, // Set global token
+  baseURL: "http://localhost:7000/user", 
+  headers: { Authorization: `Bearer ${token}` }, 
 });
 
 export const useChatStore = create((set,get) => ({
@@ -21,7 +21,7 @@ export const useChatStore = create((set,get) => ({
   getUsers: async () => {
     set({ isUsersLoading: true });
     try {
-      const res = await api.get("/users"); // Use global axios instance
+      const res = await api.get("/users"); 
       set({ users: res.data });
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -34,7 +34,7 @@ export const useChatStore = create((set,get) => ({
   getMessages: async (userId) => {
     set({ isMessagesLoading: true });
     try {
-      const res = await api.get(`/${userId}`); // Use global axios instance
+      const res = await api.get(`/${userId}`); 
       set({ messages: res.data });
     } catch (error) {
       console.error("Error fetching messages:", error);
@@ -46,8 +46,8 @@ export const useChatStore = create((set,get) => ({
   sendMessage: async (messageData) => {
     set({ isMessagesLoading: true });
     try {
-      const { selectedUser, messages } = get(); // Get current state
-      if (!selectedUser) throw new Error("No user selected"); // Prevent sending without a selected user
+      const { selectedUser, messages } = get(); 
+      if (!selectedUser) throw new Error("No user selected"); 
 
       const res = await api.post(`/send/${selectedUser._id}`, messageData);
       set({ messages: [...messages, res.data] });
@@ -60,7 +60,7 @@ export const useChatStore = create((set,get) => ({
   },
 
   subscribeToMessages: () => {
-  const { selectedUser, messages } = get(); // Get current state
+  const { selectedUser, messages } = get(); 
   if (!selectedUser) return;
 
   const socket = useAuthStore.getState().socket;

@@ -10,17 +10,17 @@ const ResetPwd = () => {
   useEffect(() => {
     const storedEmail = localStorage.getItem("resetEmail");
     if (storedEmail) {
-      setEmail(storedEmail); // ✅ Get email from localStorage
+      setEmail(storedEmail); 
     }
   }, []);
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
     
-    // Check if passwords match
+    
     if (newPassword !== confirmPassword) {
         alert("Passwords do not match!");
-        return; // Prevent form submission
+        return; 
     }
 
     try {
@@ -28,8 +28,8 @@ const ResetPwd = () => {
 
         if (response.status === 200) {
             alert(response.data.message);
-            localStorage.removeItem("resetEmail"); // ✅ Remove email from localStorage after reset
-            window.location.href = "/login"; // Navigate to login page
+            localStorage.removeItem("resetEmail"); 
+            window.location.href = "/login"; 
         }
     } catch (error) {
         alert("Error resetting password");

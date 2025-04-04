@@ -43,7 +43,7 @@ const GenerateFlashCard = () => {
       if (response.data.flashcards?.length > 0) {
         setMessage("Flashcards generated successfully!");
 
-        // Redirect to SetFlashCard with generated flashcards
+        
         navigate("/setflashcard", { state: { flashcards: response.data.flashcards } });
       } else {
         setMessage("AI did not generate enough flashcards.");

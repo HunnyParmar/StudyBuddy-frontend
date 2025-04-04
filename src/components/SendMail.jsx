@@ -11,9 +11,9 @@ const SendMail = () => {
       const response = await axios.post("http://localhost:7000/user/send-reset-code", { Email: email });
 
       if (response.status === 200) {
-        localStorage.setItem("resetEmail", email); // ✅ Save email in localStorage
+        localStorage.setItem("resetEmail", email);
         alert(response.data.message);
-        window.location.href = "/emailcode"; // Navigate to the next page
+        window.location.href = "/emailcode"; 
       }
     } catch (error) {
       alert("Error sending reset code");

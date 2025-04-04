@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaComments } from "react-icons/fa"; // Import chat icon
-import { useNavigate } from "react-router-dom"; // Import navigation hook
-
+import { FaComments } from "react-icons/fa"; 
+import { useNavigate } from "react-router-dom"; 
 const SearchUsers = () => {
     const [users, setUsers] = useState([]);
     const [searchParams, setSearchParams] = useState({
@@ -13,7 +12,7 @@ const SearchUsers = () => {
 
     const navigate = useNavigate();
 
-    // Fetch users when the component mounts or when searchParams change
+    
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -30,10 +29,10 @@ const SearchUsers = () => {
         };
 
         fetchUsers();
-    }, [searchParams]); // Runs every time searchParams changes
+    }, [searchParams]); 
 
     const handleChatClick = (userId) => {
-        localStorage.setItem("chatUserId", userId); // Store selected user ID
+        localStorage.setItem("chatUserId", userId); 
         navigate(`/chat/${userId}`);
     };
     

@@ -72,7 +72,7 @@ const TaskCard = ({ task, updateTask, deleteTask }) => {
           <p className="text-sm text-gray-500">Due: {task.dueDate.split("T")[0]}</p>
 
 <button
-  onPointerDownCapture={(e) => e.stopPropagation()} // ✅ Prevent drag blocking
+  onPointerDownCapture={(e) => e.stopPropagation()} 
   onClick={() => setIsEditing(true)}
   className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
 >
@@ -80,7 +80,7 @@ const TaskCard = ({ task, updateTask, deleteTask }) => {
 </button>
 
 <button
-  onPointerDownCapture={(e) => e.stopPropagation()} // ✅ Prevent drag blocking
+  onPointerDownCapture={(e) => e.stopPropagation()} 
   onClick={() => deleteTask(task._id)}
   className="bg-red-500 text-white px-3 py-1 rounded"
 >

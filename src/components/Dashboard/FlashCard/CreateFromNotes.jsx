@@ -26,7 +26,7 @@ const handleGenerateQuestions = async () => {
       }
     );
 
-    console.log("API Response:", response.data); // Debugging
+    console.log("API Response:", response.data); 
 
     if (response.data.flashcards?.length > 0) {
       setMessage("Flashcards generated successfully!");
@@ -38,8 +38,7 @@ const handleGenerateQuestions = async () => {
         image: "",
       }));
 
-      console.log("Formatted Flashcards:", formattedFlashcards); // Debugging
-
+      console.log("Formatted Flashcards:", formattedFlashcards); 
       navigate("/setflashcard", { state: { flashcards: formattedFlashcards } });
     } else {
       setMessage("AI did not generate enough flashcards.");
