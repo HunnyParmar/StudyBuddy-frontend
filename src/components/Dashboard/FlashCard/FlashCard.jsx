@@ -9,7 +9,6 @@ const FlashCard = () => {
   return (
     <div className="flex h-screen">
       <Dashboard />
-
       <div className="flex-1 flex flex-col items-center justify-center bg-gray-100 overflow-auto p-6 pt-5 md:pt-10 pl-65">
         <h1 className="text-4xl font-bold text-gray-800">FlashCard</h1>
         <p className="text-gray-600 mt-2">
@@ -41,7 +40,6 @@ const FlashCard = () => {
         </div>
       </div>
 
-      {/* Render modal */}
       <FlashCardModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
