@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { IoChevronBackSharp } from "react-icons/io5";
 import { Country, State } from "country-state-city";
-
+import { useAuthStore } from "../Store/useAuthStore";
 
 const SignUp = () => {
-    const navigate = useNavigate(); // Initialize navigation
+    const navigate = useNavigate(); 
     const [step, setStep] = useState(1);
+    const { connectSocket } = useAuthStore();
     const [completedSteps, setCompletedSteps] = useState(0);
     const [formData, setFormData] = useState({
       ProfilePicture: null,
@@ -80,10 +81,11 @@ const SignUp = () => {
         if (response.ok) {
             console.log("Signup Success:", data);
 
-            // ✅ Store the token in localStorage
+            
             localStorage.setItem("token", data.token);
-
-            // ✅ Navigate to dashboard
+            localStorage.setItem("user", JSON.stringify(data.user));
+            connectSocket()
+            
             navigate("/dashboard");
         } else {
             console.log("Signup Failed:", data.message);
@@ -162,7 +164,7 @@ const SignUp = () => {
                     onChange={(e) => setFormData({ ...formData, State: e.target.value })}
                     className="border p-2 rounded-lg w-full"
                     required
-                    disabled={!formData.Country} // Disable until country is selected
+                    disabled={!formData.Country} 
                   >
                     <option value="">Select State</option>
                     {State.getStatesOfCountry(formData.Country).map((state) => (

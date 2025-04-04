@@ -2,12 +2,14 @@ import { Link } from 'react-router-dom';
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoChevronBackSharp } from "react-icons/io5";
+import { useAuthStore } from "../Store/useAuthStore";
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { connectSocket } = useAuthStore();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,6 +28,8 @@ const LogIn = () => {
         setError(data.message || "Invalid email or password");
       } else {
         localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        connectSocket()
         navigate("/dashboard");
       }
     } catch (err) {

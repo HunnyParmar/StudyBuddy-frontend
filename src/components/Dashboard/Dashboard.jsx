@@ -4,6 +4,7 @@ import { FaCog } from "react-icons/fa";
 import { IoLogOutSharp } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
@@ -18,7 +19,7 @@ const Dashboard = () => {
       navigate("/login");
     } else {
       setToken(savedToken);
-      // Fetch user data
+      
       const fetchUserData = async () => {
         try {
           const response = await fetch("http://localhost:7000/user/details", {
@@ -54,7 +55,9 @@ const Dashboard = () => {
   }, []);
 
   const handleLogout = () => {
+    
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/login");
   };
 
@@ -68,7 +71,7 @@ const Dashboard = () => {
           </h2>
           <ul className="mt-4 space-y-4">
             <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
-              <Link to="/progress">Home</Link>
+              <Link to="/dashboard">Home</Link>
             </li>
             <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
             <Link to="/todo">To-Do List</Link>
@@ -77,7 +80,13 @@ const Dashboard = () => {
             <Link to="/flashcard">FlashCard</Link>
             </li>
             <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
+            <Link to="/search-users">Find Buddy</Link>
+            </li>
+            <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
             <Link to="/quiz">Quiz</Link>
+            </li>
+            <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
+            <Link to="/homepage">Notifications</Link>
             </li>
           </ul>
         </div>

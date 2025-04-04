@@ -12,7 +12,9 @@ import FlashCard from "./components/Dashboard/FlashCard/FlashCard";
 import SetFlashCard from "./components/Dashboard/FlashCard/SetFlashCard";
 import GenerateFlashCard from "./components/Dashboard/FlashCard/GenerateFlashCard";
 import Quiz from "./components/Dashboard/Quiz/Quiz";
-
+import SearchUsers from "./components/Dashboard/SearchUser/SearchUsers";
+import HomePage from "./components/Dashboard/LiveChat/HomePage";
+import { useAuthStore } from "./Store/useAuthStore";
 
 const PrivateRoute = () => {
     const token = localStorage.getItem("token");
@@ -21,6 +23,9 @@ const PrivateRoute = () => {
 
 
 function App() {
+  const {onlineUsers}=useAuthStore();
+
+  console.log(onlineUsers);
   return (
     <Router>
       <Routes>
@@ -38,8 +43,14 @@ function App() {
           <Route path="/flashcard" element={<FlashCard/>} />
           <Route path="/setflashcard" element={<SetFlashCard/>} />
           <Route path="/generatecard" element={<GenerateFlashCard/>} />
+          {/* searchuser */}
+          <Route path="/search-users" element={<SearchUsers />} />
+          <Route path="/chat/:userId" element={<HomePage />} />
           {/* Quiz */}
           <Route path="/quiz" element={<Quiz/>} />
+          {/* Live Chat */}
+          <Route path="/homepage" element={<HomePage/>} />
+          
         </Route>     
         </Routes>
     </Router>
