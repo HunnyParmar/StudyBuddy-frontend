@@ -104,7 +104,7 @@ const ToDoList = () => {
     <div className="min-h-screen bg-gray-100 p-8">
       <TaskForm addTask={addTask} />
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="ml-[230px] grid grid-cols-2 gap-1">
           {categories.map((category) => (
             <TaskColumn
               key={category}

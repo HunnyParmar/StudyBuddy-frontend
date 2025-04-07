@@ -14,11 +14,14 @@ export const useAuthStore = create((set, get) => ({
     const socket = io(BASE_URL, {
       query: { userId: user._id }, 
     });
-
+    
     socket.connect();
-
+    
     set({ socket });
-
+    socket.on("connect", () => {
+      console.log("Socket connected!", socket.id);
+    });
+  
     socket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds });
       console.log("Online users updated:", userIds);
