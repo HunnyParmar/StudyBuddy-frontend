@@ -18,26 +18,31 @@ const ChatContainer = () => {
   const [authUser, setAuthUser] = useState(null);
   const messageEndRef = useRef(null);
 
+  // Load the authenticated user from localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setAuthUser(JSON.parse(storedUser)); 
+      setAuthUser(JSON.parse(storedUser));
     }
   }, []);
 
+  // Load messages and subscribe to real-time messages when selectedUser changes
   useEffect(() => {
     if (selectedUser) {
       getMessages(selectedUser._id);
       subscribeToMessages();
-      return ()=>unsubscribeFromMessages();
+      return () => {
+        unsubscribeFromMessages();
+      };
     }
   }, [selectedUser, getMessages, subscribeToMessages, unsubscribeFromMessages]);
 
-  useEffect(()=>{
-    if(messageEndRef.current && messages){
-      messageEndRef.current.scrollIntoView({behavior:"smooth"});
+  // Scroll to bottom when messages update
+  useEffect(() => {
+    if (messageEndRef.current && messages.length) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  },[messages])
+  }, [messages]);
 
   if (isMessagesLoading) {
     return (
@@ -57,7 +62,6 @@ const ChatContainer = () => {
           <div
             key={message._id}
             className={`chat ${message.senderId === authUser?._id ? "chat-end" : "chat-start"}`}
-            ref={messageEndRef}
           >
             <div className="chat-image avatar">
               <div className="size-10 rounded-full border">
@@ -74,7 +78,7 @@ const ChatContainer = () => {
             </div>
             <div className="chat-header mb-1">
               <time className="text-xs opacity-50 ml-1">
-                {formatMessageTime(message.createdAt)}
+                {message.createdAt ? formatMessageTime(message.createdAt) : ""}
               </time>
             </div>
             <div className="chat-bubble flex flex-col">
@@ -89,6 +93,8 @@ const ChatContainer = () => {
             </div>
           </div>
         ))}
+        {/* Empty div used for scrolling into view */}
+        <div ref={messageEndRef} />
       </div>
       <MessageInput />
     </div>

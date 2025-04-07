@@ -15,15 +15,19 @@ import Quiz from "./components/Dashboard/Quiz/Quiz";
 import SearchUsers from "./components/Dashboard/SearchUser/SearchUsers";
 import HomePage from "./components/Dashboard/LiveChat/HomePage";
 import { useAuthStore } from "./Store/useAuthStore";
+import { useEffect } from "react";
 
 const PrivateRoute = () => {
     const token = localStorage.getItem("token");
     return token ? <Outlet /> : <Navigate to="/signup" />;
 };
 
-
 function App() {
-  const {onlineUsers}=useAuthStore();
+  const {onlineUsers,connectSocket }=useAuthStore();
+
+  useEffect(() => {
+    connectSocket(); // ✅ Connect socket on app load
+  }, []);
 
   console.log(onlineUsers);
   return (
