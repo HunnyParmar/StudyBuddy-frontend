@@ -1,12 +1,15 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useChatStore } from "../../../Store/useChatStore";
-import { Image, Send, X } from "lucide-react";
+import { Image, Send, X, Smile } from "lucide-react";
 import toast from "react-hot-toast";
+import EmojiPicker from "emoji-picker-react";
 
 const MessageInput = () => {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const fileInputRef = useRef(null);
+  const emojiPickerRef = useRef(null);
   const { sendMessage } = useChatStore();
 
   const handleImageChange = (e) => {
@@ -38,17 +41,36 @@ const MessageInput = () => {
         image: imagePreview,
       });
 
-      
       setText("");
       setImagePreview(null);
+      setShowEmojiPicker(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
       console.error("Failed to send message:", error);
     }
   };
 
+  const onEmojiClick = (emojiData) => {
+    setText((prev) => prev + emojiData.emoji);
+  };
+
+  // Close emoji picker when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        emojiPickerRef.current &&
+        !emojiPickerRef.current.contains(event.target)
+      ) {
+        setShowEmojiPicker(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div className="p-4 w-full">
+    <div className="p-4 w-full relative">
       {imagePreview && (
         <div className="mb-3 flex items-center gap-2">
           <div className="relative">
@@ -59,8 +81,7 @@ const MessageInput = () => {
             />
             <button
               onClick={removeImage}
-              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
-              flex items-center justify-center"
+              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300 flex items-center justify-center"
               type="button"
             >
               <X className="size-3" />
@@ -70,31 +91,58 @@ const MessageInput = () => {
       )}
 
       <form onSubmit={handleSendMessage} className="flex items-center gap-2">
-        <div className="flex-1 flex gap-2">
+        <div className="relative flex-1">
           <input
             type="text"
-            className="w-full input input-bordered rounded-lg input-sm sm:input-md"
+            className="w-full input input-bordered rounded-lg input-sm sm:input-md pr-10"
             placeholder="Type a message..."
             value={text}
-            onChange={(e) => setText(e.target.value)}
-          />
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            ref={fileInputRef}
-            onChange={handleImageChange}
+            onChange={(e) => {
+              setText(e.target.value);
+              setShowEmojiPicker(false); // Close on typing
+            }}
           />
 
           <button
             type="button"
-            className={`hidden sm:flex btn btn-circle
-                     ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
-            onClick={() => fileInputRef.current?.click()}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-zinc-500"
+            onClick={() => setShowEmojiPicker((prev) => !prev)}
           >
-            <Image size={20} />
+            <Smile size={18} />
           </button>
+
+          {showEmojiPicker && (
+            <div
+              ref={emojiPickerRef}
+              className="absolute bottom-full left-0 mb-2 z-50"
+            >
+              <EmojiPicker
+                onEmojiClick={onEmojiClick}
+                height={350}
+                
+              />
+            </div>
+          )}
         </div>
+
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          ref={fileInputRef}
+          onChange={handleImageChange}
+        />
+
+        <button
+          type="button"
+          className={`btn btn-circle btn-sm ${
+            imagePreview ? "text-emerald-500" : "text-zinc-400"
+          }`}
+          onClick={() => fileInputRef.current?.click()}
+        >
+          <Image size={20} />
+        </button>
+
         <button
           type="submit"
           className="btn btn-sm btn-circle"
@@ -106,4 +154,5 @@ const MessageInput = () => {
     </div>
   );
 };
+
 export default MessageInput;
