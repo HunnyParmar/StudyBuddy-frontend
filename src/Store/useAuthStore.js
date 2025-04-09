@@ -6,7 +6,7 @@ const BASE_URL = "http://localhost:7000";
 export const useAuthStore = create((set, get) => ({
   onlineUsers: [],
   socket: null,
-
+  
   connectSocket: () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user || get().socket?.connected) return;
@@ -26,6 +26,8 @@ export const useAuthStore = create((set, get) => ({
   },
 
   disconnectSocket: () => {
+    console.log("Socket disconnected manually");
+
     if (get().socket?.connected) {
       get().socket.disconnect();
       set({ socket: null });

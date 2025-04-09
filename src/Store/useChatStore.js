@@ -68,7 +68,9 @@ export const useChatStore = create((set, get) => ({
         socket.emit("sendMessage", {
           receiverId: selectedUser._id,
           message: res.data,
+          
         });
+        console.log(sendMessage);
       }
     } catch (error) {
       console.error("Error sending message:", error);
@@ -87,7 +89,7 @@ export const useChatStore = create((set, get) => ({
       const isRelevant =
         newMessage.senderId === selectedUser._id ||
         newMessage.receiverId === selectedUser._id;
-  
+        
       // Prevent duplicates
       const alreadyExists = get().messages.some(
         (msg) => msg._id === newMessage._id

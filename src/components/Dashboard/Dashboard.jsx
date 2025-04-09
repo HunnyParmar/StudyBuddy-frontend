@@ -4,9 +4,12 @@ import { FaCog } from "react-icons/fa";
 import { IoLogOutSharp } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
+import { Socket } from "socket.io-client";
+import { useAuthStore } from '../../Store/useAuthStore';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+   const { disconnectSocket } = useAuthStore();
   const [token, setToken] = useState(null);
   const [userData, setUserData] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -55,7 +58,7 @@ const Dashboard = () => {
   }, []);
 
   const handleLogout = () => {
-    
+    disconnectSocket(); // Disconnect the socket when logging out
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");
