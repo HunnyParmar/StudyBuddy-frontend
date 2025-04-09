@@ -16,6 +16,8 @@ import SearchUsers from "./components/Dashboard/SearchUser/SearchUsers";
 import HomePage from "./components/Dashboard/LiveChat/HomePage";
 import { useAuthStore } from "./Store/useAuthStore";
 import { useEffect } from "react";
+import UploadQuiz from "./components/Dashboard/Quiz/UploadQuiz";
+import PasteTextQuiz from "./components/Dashboard/Quiz/PasteTextQuiz";
 
 const PrivateRoute = () => {
     const token = localStorage.getItem("token");
@@ -52,6 +54,8 @@ function App() {
           <Route path="/chat/:userId" element={<HomePage />} />
           {/* Quiz */}
           <Route path="/quiz" element={<Quiz/>} />
+          <Route path="/uploadquiz" element={<UploadQuiz/>} />
+          <Route path="/pastetextquiz" element={<PasteTextQuiz/>} />
           {/* Live Chat */}
           <Route path="/homepage" element={<HomePage/>} />
           
