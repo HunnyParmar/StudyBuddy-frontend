@@ -18,6 +18,7 @@ import { useAuthStore } from "./Store/useAuthStore";
 import { useEffect } from "react";
 import UploadQuiz from "./components/Dashboard/Quiz/UploadQuiz";
 import PasteTextQuiz from "./components/Dashboard/Quiz/PasteTextQuiz";
+import QandA from "./components/Dashboard/Quiz/QandA";
 
 const PrivateRoute = () => {
     const token = localStorage.getItem("token");
@@ -56,6 +57,7 @@ function App() {
           <Route path="/quiz" element={<Quiz/>} />
           <Route path="/uploadquiz" element={<UploadQuiz/>} />
           <Route path="/pastetextquiz" element={<PasteTextQuiz/>} />
+          <Route path="/qanda" element={<QandA/>} />
           {/* Live Chat */}
           <Route path="/homepage" element={<HomePage/>} />
           
