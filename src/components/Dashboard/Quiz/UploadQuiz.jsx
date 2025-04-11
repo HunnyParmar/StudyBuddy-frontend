@@ -1,8 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom"; // ← Import this
 import Quiz from "./Quiz";
 import { FaFileWord, FaFilePdf, FaFilePowerpoint } from "react-icons/fa";
 
 const UploadQuiz = () => {
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate(); // ← Hook for navigation
+
+  const handleFileChange = (e) => setFile(e.target.files[0]);
+
+  const handleGenerate = async () => {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("sourceType", "file");
+    formData.append("topic", "General");
+
+    setLoading(true);
+    try {
+      const response = await axios.post("http://localhost:7000/quiz/quiz", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const quizData = response.data.quiz;
+
+      if (quizData.length > 0) {
+        navigate("/qanda", { state: { quiz: quizData } }); // ← Go to QandA page
+      }
+
+    } catch (error) {
+      console.error("Upload error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Quiz>
       <div className="bg-white p-6 rounded-2xl shadow-md w-full max-w-4xl mx-auto text-center border-2 border-dashed border-gray-100">
@@ -21,15 +60,24 @@ const UploadQuiz = () => {
 
         <label className="inline-block cursor-pointer bg-gray-500 hover:bg-gray-700 text-white px-6 py-2 rounded-md font-medium">
           Browse files
-          <input type="file" className="hidden" />
+          <input
+            type="file"
+            accept=".pdf,.doc,.docx,.ppt,.pptx"
+            onChange={handleFileChange}
+            className="hidden"
+          />
         </label>
-        
       </div>
+
       <div className="mt-4 flex justify-end mr-5">
-          <button className="bg-teal-700 hover:bg-teal-900 text-white px-10 py-2 rounded-md font-medium cursor-pointer">
-            Generate
-          </button>
-        </div>
+        <button
+          className="bg-teal-700 hover:bg-teal-900 text-white px-10 py-2 rounded-md font-medium cursor-pointer"
+          onClick={handleGenerate}
+          disabled={loading}
+        >
+          {loading ? "Generating..." : "Generate"}
+        </button>
+      </div>
     </Quiz>
   );
 };
