@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { IoChevronBackSharp } from "react-icons/io5";
 import { Country, State } from "country-state-city";
 import { useAuthStore } from "../Store/useAuthStore";
-
+import axios from "../App/axios";
 const SignUp = () => {
     const navigate = useNavigate(); 
     const [step, setStep] = useState(1);
@@ -56,44 +56,41 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const formDataToSend = new FormData();
     formDataToSend.append("ProfilePicture", formData.ProfilePicture);
     formDataToSend.append("FullName", formData.FullName);
     formDataToSend.append("UserName", formData.UserName);
     formDataToSend.append("Email", formData.Email);
     formDataToSend.append("Password", formData.Password);
-    formDataToSend.append("ConfirmPassword", formData.Password); 
+    formDataToSend.append("ConfirmPassword", formData.Password);
     formDataToSend.append("Country", formData.Country);
     formDataToSend.append("State", formData.State);
     formDataToSend.append("EducationLevel", formData.EducationLevel);
     formDataToSend.append("Subject", formData.Subject);
     formDataToSend.append("StudyGoals", formData.StudyGoals);
-
+  
     try {
-        const response = await fetch("http://localhost:7000/user/reg", {
-            method: "POST",
-            body: formDataToSend,
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            console.log("Signup Success:", data);
-
-            
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
-            connectSocket()
-            
-            navigate("/dashboard");
-        } else {
-            console.log("Signup Failed:", data.message);
-        }
+      const response = await axios.post("/user/reg", formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+  
+      const data = response.data;
+  
+      if (response.status === 200) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        connectSocket();
+        navigate("/dashboard");
+      } else {
+        console.log("Signup Failed:", data.message);
+      }
     } catch (error) {
-        console.error("Error:", error);
+      console.error("Signup error:", error.response?.data || error.message);
     }
-};
+  };
 
   return (
     <div className="bg-gradient-to-br from-[#053F5E] to-gray-100 to-teal-100 h-screen flex items-center justify-center">

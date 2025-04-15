@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../../../App/axios"; // ✅ Using custom Axios instance
 import { FaComments } from "react-icons/fa"; 
 import { useNavigate } from "react-router-dom"; 
+
 const SearchUsers = () => {
     const [users, setUsers] = useState([]);
     const [searchParams, setSearchParams] = useState({
@@ -12,14 +13,13 @@ const SearchUsers = () => {
 
     const navigate = useNavigate();
 
-    
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 const hasFilters = searchParams.EducationLevel || searchParams.Subject || searchParams.Country;
                 const response = hasFilters
-                    ? await axios.get("http://localhost:7000/user/search-users", { params: searchParams })
-                    : await axios.get("http://localhost:7000/user/search-users");
+                    ? await axios.get("/user/search-users", { params: searchParams }) // ✅ No base URL here
+                    : await axios.get("/user/search-users");
                 
                 console.log("Fetched users:", response.data);
                 setUsers(response.data);
@@ -71,21 +71,20 @@ const SearchUsers = () => {
                     users.map((user) => (
                         <div key={user._id} className="border p-4 rounded shadow">
                             <div>
-                            <h3 className="text-xl font-semibold">{user.FullName}</h3>
-                            <p><strong>Username:</strong> {user.UserName}</p>
-                            <p><strong>Email:</strong> {user.Email}</p>
-                            <p><strong>Education Level:</strong> {user.EducationLevel}</p>
-                            <p><strong>Subject:</strong> {user.Subject}</p>
-                            <p><strong>Country:</strong> {user.Country}</p>
+                                <h3 className="text-xl font-semibold">{user.FullName}</h3>
+                                <p><strong>Username:</strong> {user.UserName}</p>
+                                <p><strong>Email:</strong> {user.Email}</p>
+                                <p><strong>Education Level:</strong> {user.EducationLevel}</p>
+                                <p><strong>Subject:</strong> {user.Subject}</p>
+                                <p><strong>Country:</strong> {user.Country}</p>
                             </div>
                             <button
-                                onClick={() => handleChatClick(user._id, user)}
+                                onClick={() => handleChatClick(user._id)}
                                 className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600"
                                 title="Start Chat"
                             >
                                 <FaComments size={24} />
                             </button>
-
                         </div>
                     ))
                 ) : (
@@ -97,4 +96,3 @@ const SearchUsers = () => {
 };
 
 export default SearchUsers;
-

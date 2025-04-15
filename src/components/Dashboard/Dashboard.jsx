@@ -1,43 +1,36 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FaCog } from "react-icons/fa";
 import { IoLogOutSharp } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
-import { Link } from "react-router-dom";
-import { Socket } from "socket.io-client";
 import { useAuthStore } from '../../Store/useAuthStore';
+import axios from "../../App/axios"; // ✅ using base axios
 
 const Dashboard = () => {
   const navigate = useNavigate();
-   const { disconnectSocket } = useAuthStore();
+  const { disconnectSocket } = useAuthStore();
   const [token, setToken] = useState(null);
   const [userData, setUserData] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const savedToken = localStorage.getItem("token"); 
+    const savedToken = localStorage.getItem("token");
 
     if (!savedToken) {
       navigate("/login");
     } else {
       setToken(savedToken);
-      
+
       const fetchUserData = async () => {
         try {
-          const response = await fetch("http://localhost:7000/user/details", {
-            method: "GET",
+          const response = await axios.get("/user/details", {
             headers: {
-              Authorization: `Bearer ${savedToken}`, 
+              Authorization: `Bearer ${savedToken}`,
             },
           });
 
-          if (!response.ok) {
-            throw new Error("Failed to fetch user data");
-          }
-
-          const data = await response.json();
-          setUserData(data); 
+          setUserData(response.data);
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
@@ -58,7 +51,7 @@ const Dashboard = () => {
   }, []);
 
   const handleLogout = () => {
-    disconnectSocket(); // Disconnect the socket when logging out
+    disconnectSocket();
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");
@@ -67,41 +60,22 @@ const Dashboard = () => {
   return (
     token && (
       <div className="flex">
-        
         <div className="w-56 h-screen bg-gray-100/50 p-4 shadow-lg fixed top-0 left-0 z-50">
-          <h2 className="text-2xl font-bold text-teal-600 pt-4 pb-6">
-            StudyBuddy
-          </h2>
+          <h2 className="text-2xl font-bold text-teal-600 pt-4 pb-6">StudyBuddy</h2>
           <ul className="mt-4 space-y-4">
-            <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
-              <Link to="/dashboard">Home</Link>
-            </li>
-            <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
-            <Link to="/todo">To-Do List</Link>
-            </li>
-            <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
-            <Link to="/flashcard">FlashCard</Link>
-            </li>
-            <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
-            <Link to="/search-users">Find Buddy</Link>
-            </li>
-            <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
-            <Link to="/quiz">Quiz</Link>
-            </li>
-            <li className="flex items-center space-x-3 text-md cursor-pointer hover:text-teal-500">
-            <Link to="/homepage">Notifications</Link>
-            </li>
+            <li className="hover:text-teal-500"><Link to="/dashboard">Home</Link></li>
+            <li className="hover:text-teal-500"><Link to="/todo">To-Do List</Link></li>
+            <li className="hover:text-teal-500"><Link to="/flashcard">FlashCard</Link></li>
+            <li className="hover:text-teal-500"><Link to="/search-users">Find Buddy</Link></li>
+            <li className="hover:text-teal-500"><Link to="/quiz">Quiz</Link></li>
+            <li className="hover:text-teal-500"><Link to="/homepage">Notifications</Link></li>
           </ul>
         </div>
 
-        
         <div className="flex-1 min-h-screen bg-gray-100 text-gray-800">
-          
-        <nav className="fixed top-0 left-56 right-0 flex justify-between items-center p-3 bg-white shadow-md z-50">
-
+          <nav className="fixed top-0 left-56 right-0 flex justify-between items-center p-3 bg-white shadow-md z-50">
             <span></span>
 
-            
             <div
               className="relative flex items-center cursor-pointer space-x-2"
               ref={dropdownRef}
@@ -145,6 +119,7 @@ const Dashboard = () => {
             </div>
           </nav>
         </div>
+        <div className="flex-1 ml-48 p-4"></div>
       </div>
     )
   );

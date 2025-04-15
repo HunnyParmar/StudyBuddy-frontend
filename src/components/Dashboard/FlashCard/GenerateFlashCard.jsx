@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IoChevronBackSharp } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../../App/axios"; // ✅ Use custom axios instance
 
 const GenerateFlashCard = () => {
   const [text, setText] = useState("");
@@ -33,7 +33,7 @@ const GenerateFlashCard = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:7000/user/flashcards", formData, {
+      const response = await axios.post("/user/flashcards", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -42,8 +42,6 @@ const GenerateFlashCard = () => {
 
       if (response.data.flashcards?.length > 0) {
         setMessage("Flashcards generated successfully!");
-
-        
         navigate("/setflashcard", { state: { flashcards: response.data.flashcards } });
       } else {
         setMessage("AI did not generate enough flashcards.");
@@ -56,16 +54,29 @@ const GenerateFlashCard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#EBE8DB]/25 flex justify-center items-center">
+    <div className="relative min-h-screen overflow-auto flex justify-center items-center">
+      {/* Background Image with Blur */}
+      <div className="absolute inset-0">
+        <img
+          src="https://i.etsystatic.com/7267538/r/il/eff5bd/2220380309/il_570xN.2220380309_mjdx.jpg"
+          alt="Background"
+          className="w-full h-full object-cover blur-sm"
+        />
+        <div className="absolute inset-0 bg-teal-900/60"></div>
+      </div>
+
+      {/* Back Button */}
       <Link to="/flashcard">
-        <IoChevronBackSharp className="text-[#0B192C] bg-white/80 p-1 text-3xl border-1 rounded-full fixed top-3 left-3" />
+        <IoChevronBackSharp className="text-[#0B192C] bg-white/80 p-1 text-3xl border-1 rounded-full fixed top-3 left-3 z-50" />
       </Link>
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-5xl">
+
+      {/* Content */}
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[90vh] overflow-y-auto z-10">
         <h1 className="text-[#143D60] text-3xl font-bold">GENERATE FLASHCARD SET</h1>
 
         <div className="flex gap-6 mt-4">
           <button className="pb-1 border-b-3 border-white hover:border-teal-700">Paste text</button>
-          <button className="pb-1 border-b-3 border-white hover:border-teal-700">Upload files</button>
+          <Link to="/setflashcard" className="pb-1 border-b-3 border-white hover:border-teal-700">Upload files</Link>
         </div>
 
         <textarea
@@ -91,7 +102,7 @@ const GenerateFlashCard = () => {
         {message && <p className="text-center text-red-500 mt-4">{message}</p>}
 
         <button
-          className="w-full text-lg mt-4 py-2 bg-teal-700 text-white font-semibold rounded-lg shadow hover:border-teal-700 hover:text-teal-800 hover:bg-white border-2"
+          className="w-40 text-lg mt-4 py-2 bg-teal-700 text-white font-semibold rounded-lg shadow hover:border-teal-700 hover:text-teal-800 hover:bg-white border-2"
           onClick={handleGenerate}
           disabled={loading}
         >

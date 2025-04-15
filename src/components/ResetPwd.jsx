@@ -1,6 +1,5 @@
-import React from 'react'
-import axios from "axios";
-import { useState ,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from "../App/axios"; // ✅ uses your custom baseURL
 
 const ResetPwd = () => {
   const [email, setEmail] = useState("");
@@ -10,32 +9,33 @@ const ResetPwd = () => {
   useEffect(() => {
     const storedEmail = localStorage.getItem("resetEmail");
     if (storedEmail) {
-      setEmail(storedEmail); 
+      setEmail(storedEmail);
     }
   }, []);
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
-    
-    
+
     if (newPassword !== confirmPassword) {
-        alert("Passwords do not match!");
-        return; 
+      alert("Passwords do not match!");
+      return;
     }
 
     try {
-        const response = await axios.post("http://localhost:7000/user/reset-password", { Email: email, newPassword: newPassword });
+      const response = await axios.post("/user/reset-password", {
+        Email: email,
+        newPassword: newPassword,
+      });
 
-        if (response.status === 200) {
-            alert(response.data.message);
-            localStorage.removeItem("resetEmail"); 
-            window.location.href = "/login"; 
-        }
+      if (response.status === 200) {
+        alert(response.data.message);
+        localStorage.removeItem("resetEmail");
+        window.location.href = "/login";
+      }
     } catch (error) {
-        alert("Error resetting password");
+      alert("Error resetting password");
     }
-};
-
+  };
 
   return (
     <>
@@ -44,7 +44,6 @@ const ResetPwd = () => {
           <div className="w-full max-w-lg h-auto p-8 shadow-2xl bg-white/70 rounded-3xl backdrop-blur-md">
             <h2 className="text-3xl font-bold text-center mb-6 text-[#0B192C]">Reset Password</h2>
             <form className="space-y-4" onSubmit={handleResetPassword}>
-
               <div>
                 <label className="block text-[#0B192C] font-medium">Enter new password</label>
                 <input
@@ -65,7 +64,7 @@ const ResetPwd = () => {
                   required
                 />
               </div>
-              
+
               <button
                 type="submit"
                 className="w-full bg-[#2CA4BF] text-white font-semibold py-2 rounded-lg hover:bg-[#218a9b] transition duration-300"
@@ -73,12 +72,11 @@ const ResetPwd = () => {
                 Change Password
               </button>
             </form>
-            
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ResetPwd
+export default ResetPwd;

@@ -5,7 +5,7 @@ const Quiz = ({ children }) => {
   return (
     <div className="flex h-screen">
       <Dashboard />
-      <div className="flex-1 flex flex-col mt-15 bg-teal-100/20 overflow-auto p-6 pt-5 md:pt-10 pl-65">
+      <div className="flex-1 flex flex-col mt-15 bg-teal-100/20 overflow-auto p-6 pt-5 md:pt-10 ">
         <h1 className="text-4xl font-bold text-gray-800">Generate a Practice Test</h1>
         <p className="text-gray-600 mt-2">
           Choose or upload materials to generate practice questions designed for you

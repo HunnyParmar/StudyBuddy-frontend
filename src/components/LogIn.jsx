@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoChevronBackSharp } from "react-icons/io5";
 import { useAuthStore } from "../Store/useAuthStore";
+import axios from "../App/axios"; // ✅ Using axios instance
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
@@ -16,24 +17,21 @@ const LogIn = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:7000/user/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ Email: email, Password: password }),
+      const response = await axios.post("/user/login", {
+        Email: email,
+        Password: password,
       });
 
-      const data = await response.json(); // Extract data from response
+      const data = response.data;
 
-      if (!response.ok) {
-        setError(data.message || "Invalid email or password");
-      } else {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        connectSocket()
-        navigate("/dashboard");
-      }
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      connectSocket();
+      navigate("/dashboard");
+
     } catch (err) {
-      setError("Something went wrong");
+      const message = err.response?.data?.message || "Something went wrong";
+      setError(message);
     }
   };
 

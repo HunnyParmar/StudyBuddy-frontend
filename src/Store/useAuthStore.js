@@ -1,17 +1,15 @@
 import { create } from "zustand";
 import { io } from "socket.io-client";
-
-const BASE_URL = "http://localhost:7000";
-
+import axios from "../App/axios";
 export const useAuthStore = create((set, get) => ({
   onlineUsers: [],
   socket: null,
-  
+
   connectSocket: () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user || get().socket?.connected) return;
 
-    const socket = io(BASE_URL, {
+    const socket = io(axios.defaults.baseURL, { // ✅ Use baseURL from axios instance
       query: { userId: user._id },
     });
 
@@ -26,8 +24,6 @@ export const useAuthStore = create((set, get) => ({
   },
 
   disconnectSocket: () => {
-    console.log("Socket disconnected manually");
-
     if (get().socket?.connected) {
       get().socket.disconnect();
       set({ socket: null });

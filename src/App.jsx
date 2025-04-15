@@ -19,10 +19,12 @@ import { useEffect } from "react";
 import UploadQuiz from "./components/Dashboard/Quiz/UploadQuiz";
 import PasteTextQuiz from "./components/Dashboard/Quiz/PasteTextQuiz";
 import QandA from "./components/Dashboard/Quiz/QandA";
+import FolderView from './components/Dashboard/FlashCard/FolderView ';
+import FlashcardsByTopic from './components/Dashboard/FlashCard/FlashcardsByTopic';
 
 const PrivateRoute = () => {
     const token = localStorage.getItem("token");
-    return token ? <Outlet /> : <Navigate to="/signup" />;
+    return token ? <Outlet /> : <Navigate to="/login" />;
 };
 
 function App() {
@@ -50,6 +52,12 @@ function App() {
           <Route path="/flashcard" element={<FlashCard/>} />
           <Route path="/setflashcard" element={<SetFlashCard/>} />
           <Route path="/generatecard" element={<GenerateFlashCard/>} />
+          <Route path="/my-flashcards" element={<FolderView type="user" />} />
+        <Route path="/all-flashcards" element={<FolderView type="all" />} />
+
+        {/* ✅ For topic view */}
+        <Route path="/my/topics/:topic" element={<FlashcardsByTopic type="user" />} />
+        <Route path="/topics/:topic" element={<FlashcardsByTopic type="all" />} />
           {/* searchuser */}
           <Route path="/search-users" element={<SearchUsers />} />
           <Route path="/chat/:userId" element={<HomePage />} />

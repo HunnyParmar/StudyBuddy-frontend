@@ -26,14 +26,14 @@ const TaskForm = ({ addTask }) => {
       <Dashboard />
 
       {/* Added margin to push the form to the right */}
-      <div className="flex-1 flex flex-col items-center justify-center p-6 ml-48">
+      <div className="flex-1 flex flex-col items-center justify-center p-6">
         <div className="pr-1 pl-4 pt-4 w-full ">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-4xl font-bold text-black">Task Management</h2>
             
           </div>
 
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-lg font-medium text-black mb-1">Title</label>
               <input
@@ -59,7 +59,7 @@ const TaskForm = ({ addTask }) => {
               />
             </div>
 
-            <div className="md:col-span-2">
+            <div className="">
               <label className="block text-lg mb-1 font-medium text-black">Status</label>
               <select
                 name="status"
@@ -75,7 +75,7 @@ const TaskForm = ({ addTask }) => {
               </select>
             </div>
 
-            <div className="md:col-span-2">
+            <div className="md:col-span-3">
               <label className="block font-medium text-black text-lg mb-1">Description</label>
               <textarea
                 name="description"
@@ -86,7 +86,7 @@ const TaskForm = ({ addTask }) => {
               />
             </div>
 
-            <div className="flex gap-4 md:col-span-2 justify-end">
+            <div className="flex gap-4 md:col-span-3 justify-end">
               <button
                 type="button"
                 onClick={() =>
