@@ -16,7 +16,7 @@ const FolderView = ({ type = "all" }) => {
         setLoading(true);
 
         const endpoint =
-          type === "user"
+          type === 'user'
             ? "/user/user/flashcards"
             : "/user/flashcards/all"; // ✅ Use relative paths for API calls
 

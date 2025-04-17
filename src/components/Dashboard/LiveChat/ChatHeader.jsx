@@ -1,11 +1,28 @@
-import { X } from "lucide-react";
+import { X,PhoneCall } from "lucide-react";
 import { useAuthStore } from "../../../Store/useAuthStore";
 import { useChatStore } from "../../../Store/useChatStore";
 
 const ChatHeader = () => {
-  const { selectedUser, setSelectedUser } = useChatStore();
-  const { onlineUsers } = useAuthStore();
-  // const onlineUsers=[];
+  const { selectedUser, setSelectedUser,setAudioCallUser } = useChatStore();
+  const { socket,onlineUsers } = useAuthStore();
+
+  const handleAudioCall = () => {
+    const authUser = JSON.parse(localStorage.getItem("user"));
+    console.log("Audio call started with", selectedUser.FullName);
+    setAudioCallUser(selectedUser);
+
+    console.log("CALLING FROM:", authUser.FullName, "TO:", selectedUser.FullName);
+
+    if (socket && socket.connected && authUser) {
+      socket.emit("audio-call-request", {
+        to: selectedUser._id,
+        from: authUser,
+      });
+    } else {
+      console.warn("Socket not connected or user not found.");
+    }
+  };
+
 
   return (
     <div className="p-2.5 border-b border-base-300">
@@ -26,11 +43,15 @@ const ChatHeader = () => {
             </p>
           </div>
         </div>
-
-        
-        <button onClick={() => setSelectedUser(null)}>
-          <X />
-        </button>
+        {/* Right - Action Buttons */}
+        <div className="flex items-center gap-3">
+          <button onClick={handleAudioCall}>
+            <PhoneCall className="text-green-600" />
+          </button>
+          <button onClick={() => setSelectedUser(null)}>
+            <X />
+          </button>
+        </div>
       </div>
     </div>
   );

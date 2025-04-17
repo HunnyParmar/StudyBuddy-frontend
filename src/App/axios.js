@@ -1,11 +1,13 @@
 import axios from "axios";
-
+console.log(import.meta.env);
 const instance = axios.create({
-  baseURL: "https://study-buddy-aryh.onrender.com", // ⬅️ Replace with your API base URL
+  baseURL: "http://localhost:7000",
+  
   headers: {
     "Content-Type": "application/json",
   },
 });
+
 
 // Automatically attach token (if exists)
 instance.interceptors.request.use(

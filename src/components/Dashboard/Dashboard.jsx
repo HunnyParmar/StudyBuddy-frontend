@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { FaCog } from "react-icons/fa";
+import { FaHome, FaListAlt, FaSearch, FaQuestionCircle, FaBell } from "react-icons/fa";
 import { IoLogOutSharp } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { useAuthStore } from '../../Store/useAuthStore';
 import axios from "../../App/axios"; // ✅ using base axios
+import { motion } from "framer-motion";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -60,18 +61,76 @@ const Dashboard = () => {
   return (
     token && (
       <div className="flex">
-        <div className="w-56 h-screen bg-gray-100/50 p-4 shadow-lg fixed top-0 left-0 z-50">
-          <h2 className="text-2xl font-bold text-teal-600 pt-4 pb-6">StudyBuddy</h2>
+        {/* Sidebar */}
+        <div className="w-56 h-screen bg-white p-4 shadow-lg fixed top-0 left-0 z-50">
+        <h2 className="text-2xl font-bold text-teal-600 pt-2 pb-4 pl-2 text-left">
+  StudyBuddy
+</h2>
+
           <ul className="mt-4 space-y-4">
-            <li className="hover:text-teal-500"><Link to="/dashboard">Home</Link></li>
-            <li className="hover:text-teal-500"><Link to="/todo">To-Do List</Link></li>
-            <li className="hover:text-teal-500"><Link to="/flashcard">FlashCard</Link></li>
-            <li className="hover:text-teal-500"><Link to="/search-users">Find Buddy</Link></li>
-            <li className="hover:text-teal-500"><Link to="/quiz">Quiz</Link></li>
-            <li className="hover:text-teal-500"><Link to="/homepage">Notifications</Link></li>
+          <Link to="/dashboard">
+  <motion.li
+    whileHover={{ scale: 1.05, backgroundColor: "#E6FFFA" }}
+    className="flex items-center space-x-3 px-3 py-2 rounded-md cursor-pointer mb-4"
+  >
+    <FaHome className="text-teal-600" />
+    <span className="text-gray-700 text-base">Home</span>
+  </motion.li>
+</Link>
+
+<Link to="/todo">
+  <motion.li
+    whileHover={{ scale: 1.05, backgroundColor: "#E6FFFA" }}
+    className="flex items-center space-x-3 px-3 py-2 rounded-md cursor-pointer mb-4"
+  >
+    <FaListAlt className="text-teal-600" />
+    <span className="text-gray-700 text-base">To-Do List</span>
+  </motion.li>
+</Link>
+
+<Link to="/flashcard">
+  <motion.li
+    whileHover={{ scale: 1.05, backgroundColor: "#E6FFFA" }}
+    className="flex items-center space-x-3 px-3 py-2 rounded-md cursor-pointer mb-4"
+  >
+    <FaListAlt className="text-teal-600" />
+    <span className="text-gray-700 text-base">FlashCard</span>
+  </motion.li>
+</Link>
+
+<Link to="/search-users">
+  <motion.li
+    whileHover={{ scale: 1.05, backgroundColor: "#E6FFFA" }}
+    className="flex items-center space-x-3 px-3 py-2 rounded-md cursor-pointer mb-4"
+  >
+    <FaSearch className="text-teal-600" />
+    <span className="text-gray-700 text-base">Find Buddy</span>
+  </motion.li>
+</Link>
+
+<Link to="/quiz">
+  <motion.li
+    whileHover={{ scale: 1.05, backgroundColor: "#E6FFFA" }}
+    className="flex items-center space-x-3 px-3 py-2 rounded-md cursor-pointer mb-4"
+  >
+    <FaQuestionCircle className="text-teal-600" />
+    <span className="text-gray-700 text-base">Quiz</span>
+  </motion.li>
+</Link>
+
+<Link to="/homepage">
+  <motion.li
+    whileHover={{ scale: 1.05, backgroundColor: "#E6FFFA" }}
+    className="flex items-center space-x-3 px-3 py-2 rounded-md cursor-pointer mb-4"
+  >
+    <FaBell className="text-teal-600" />
+    <span className="text-gray-700 text-base">Notifications</span>
+  </motion.li>
+</Link>
+
           </ul>
         </div>
-
+        {/* Main Content */}
         <div className="flex-1 min-h-screen bg-gray-100 text-gray-800">
           <nav className="fixed top-0 left-56 right-0 flex justify-between items-center p-3 bg-white shadow-md z-50">
             <span></span>
@@ -87,7 +146,7 @@ const Dashboard = () => {
 
               {userData.ProfilePicture ? (
                 <img
-                  src={`http://localhost:7000/${userData.ProfilePicture}`}
+                  src={`http://localhost:7000/${userData.ProfilePicture}?t=${Date.now()}`}
                   alt="Profile"
                   className="w-10 h-10 rounded-full object-cover border border-gray-300"
                 />
@@ -95,17 +154,15 @@ const Dashboard = () => {
                 <CgProfile className="w-10 h-10 text-gray-500" />
               )}
 
-              {isDropdownOpen && (
+{isDropdownOpen && (
                 <div className="absolute top-full right-0 w-48 bg-white rounded-lg shadow-lg border border-gray-300 z-50">
                   <ul className="text-gray-700">
-                    <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                  <Link to="/profile">
+                    <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer flex items-center">
                       <CgProfile className="inline-block mr-2" />
                       Profile
                     </li>
-                    <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
-                      <FaCog className="inline-block mr-2" />
-                      Settings
-                    </li>
+                  </Link>
                     <li
                       className="px-4 py-2 flex items-center space-x-2 hover:bg-red-500 hover:text-white cursor-pointer"
                       onClick={handleLogout}
@@ -119,7 +176,7 @@ const Dashboard = () => {
             </div>
           </nav>
         </div>
-        <div className="flex-1 ml-48 p-4"></div>
+        <div className="flex-1 ml-48 p-4 "></div>
       </div>
     )
   );

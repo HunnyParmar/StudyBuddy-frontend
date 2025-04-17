@@ -20,7 +20,7 @@ const FlashcardsByTopic = () => {
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
         const res = await axios.get(
-          `/user/flashcards?topic=${encodeURIComponent(topic)}`, // ✅ Use relative paths
+          `/user/flashcards?topic=${encodeURIComponent(topic)}`, 
           { headers }
         );
 

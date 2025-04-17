@@ -21,6 +21,8 @@ import PasteTextQuiz from "./components/Dashboard/Quiz/PasteTextQuiz";
 import QandA from "./components/Dashboard/Quiz/QandA";
 import FolderView from './components/Dashboard/FlashCard/FolderView ';
 import FlashcardsByTopic from './components/Dashboard/FlashCard/FlashcardsByTopic';
+import Profile from "./components/Dashboard/Profile";
+import QuizHistory from "./components/Dashboard/Quiz/QuizHistory";
 
 const PrivateRoute = () => {
     const token = localStorage.getItem("token");
@@ -47,6 +49,8 @@ function App() {
         
         <Route element={<PrivateRoute />}>
           <Route exact path="/dashboard" element={<Dashboard />} />
+
+          <Route path="/profile" element={<Profile/>} />
           <Route path="/todo" element={<ToDoList/>} />
           {/* FlashCard */}
           <Route path="/flashcard" element={<FlashCard/>} />
@@ -66,6 +70,9 @@ function App() {
           <Route path="/uploadquiz" element={<UploadQuiz/>} />
           <Route path="/pastetextquiz" element={<PasteTextQuiz/>} />
           <Route path="/qanda" element={<QandA/>} />
+          <Route path="/quizhistory" element={<QuizHistory/>} />
+          
+
           {/* Live Chat */}
           <Route path="/homepage" element={<HomePage/>} />
           
