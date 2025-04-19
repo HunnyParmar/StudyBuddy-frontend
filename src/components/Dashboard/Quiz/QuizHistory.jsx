@@ -12,7 +12,6 @@ const QuizHistory = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-
         console.log("Fetched quiz history:", res.data);
         setQuizzes(res.data.quizzes || []);
       } catch (error) {
@@ -33,7 +32,7 @@ const QuizHistory = () => {
 
         <div className="mb-6 p-4 bg-teal-100 border-l-4 border-teal-500 text-teal-900 shadow-sm rounded">
           <p className="text-lg font-semibold">
-            🎯 Total Score: {totalScore} / {totalQuizzes}
+            🎯 Total Score: {totalScore} / {totalQuizzes * 20}
           </p>
           <p className="text-sm text-teal-700">Each correct answer earns 1 point.</p>
         </div>
@@ -41,37 +40,49 @@ const QuizHistory = () => {
         {quizzes.length === 0 ? (
           <p className="text-gray-600">No quizzes found.</p>
         ) : (
-          quizzes.map((quiz, index) => (
-            <div key={quiz.quizId} className="mb-6 p-5 border rounded-lg bg-white shadow-sm">
-              <p className="font-semibold mb-3">
-                Quiz {index + 1}: {quiz.question}
+          quizzes.map((quiz, i) => (
+            <div key={quiz.quizId} className="mb-8 p-6 border rounded-lg bg-white shadow-md">
+              <p className="text-xl font-semibold mb-2">Quiz {i + 1}</p>
+              <p className="text-sm text-gray-600 mb-4">
+                Score: <strong>{quiz.score} / {quiz.questions?.length || 20}</strong> | Time taken:{" "}
+                {Math.floor(quiz.timeTaken / 60)} min {quiz.timeTaken % 60} sec
               </p>
 
-              {quiz.options?.map((opt, i) => {
-                const isCorrect = opt === quiz.correctAnswer;
-                const isUserWrong = opt === quiz.userAnswer && !isCorrect;
+              {quiz.questions?.length ? (
+                quiz.questions.map((q, qIndex) => (
+                  <div key={qIndex} className="mb-4">
+                    <p className="font-medium mb-1">{qIndex + 1}. {q.question}</p>
 
-                return (
-                  <p
-                    key={i}
-                    className={`pl-6 py-1 rounded ${isCorrect ? "bg-green-100 text-green-800 font-semibold" : isUserWrong ? "bg-red-100 text-red-800" : "text-gray-800"}`}
-                  >
-                    {String.fromCharCode(65 + i)}. {opt}
-                  </p>
-                );
-              })}
+                    {q.options.map((opt, idx) => {
+                      const isCorrect = opt === q.correctAnswer;
+                      const isUserAnswer = opt === q.userAnswer;
 
-              <p className="text-sm mt-2 text-gray-700">
-                Your answer: <strong>{quiz.userAnswer || "—"}</strong> 
-                {quiz.isCorrect ? "true" : "flase"} | Correct: <strong>{quiz.correctAnswer}</strong>
-              </p>
+                      return (
+                        <p
+                          key={idx}
+                          className={`pl-6 py-1 rounded ${
+                            isCorrect
+                              ? "bg-green-100 text-green-800 font-semibold"
+                              : isUserAnswer
+                              ? "bg-red-100 text-red-800"
+                              : "text-gray-800"
+                          }`}
+                        >
+                          {String.fromCharCode(65 + idx)}. {opt}
+                        </p>
+                      );
+                    })}
 
-              <div className="mt-4 text-teal-800">
-                <p className="font-semibold">Score: {quiz.score} / 1</p>
-                <p className="text-sm">Time taken: {Math.floor(quiz.timeTaken / 60)} minutes {quiz.timeTaken % 60} seconds</p>
-              </div>
+                    <p className="text-sm text-gray-700 mt-1">
+                      Your answer: <strong>{q.userAnswer || "—"}</strong> | Correct: <strong>{q.correctAnswer}</strong> {q.isCorrect ? "✅" : "❌"}
+                    </p>
 
-              <hr className="mt-4" />
+                    <hr className="mt-3" />
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500">Detailed questions not available for this quiz.</p>
+              )}
             </div>
           ))
         )}

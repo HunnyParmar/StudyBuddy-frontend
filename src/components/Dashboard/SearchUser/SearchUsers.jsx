@@ -34,10 +34,10 @@ const SearchUsers = () => {
           ? await axios.get("/user/search-users", { params: searchParams })
           : await axios.get("/user/search-users");
 
-        // Exclude the logged-in user from results
-        const filteredUsers = response.data.filter(
-          (user) => user._id !== loggedInUserId
-        );
+        // ✅ Safe filtering to exclude the logged-in user
+        const filteredUsers = loggedInUserId
+          ? response.data.filter((user) => user._id !== loggedInUserId)
+          : response.data;
 
         setUsers(filteredUsers);
       } catch (error) {
@@ -119,8 +119,8 @@ const SearchUsers = () => {
                   className="bg-white rounded-2xl shadow-md overflow-hidden transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg"
                 >
                   {/* Gradient Header with Avatar + Name */}
-                  <div className="bg-gradient-to-tr from-teal-600 to-teal-400 p-4 flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-teal-600 font-bold text-lg">
+                  <div className="bg-[radial-gradient(at_20%_30%,#0f766e_0%,transparent_40%),radial-gradient(at_80%_20%,#0e7490_0%,transparent_50%),radial-gradient(at_50%_80%,#0f766e_0%,transparent_45%),radial-gradient(at_70%_60%,#115e59_0%,transparent_40%)] bg-teal-900 px-4 py-2 flex items-center gap-4">
+                    <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-teal-600 font-bold text-lg">
                       {user.FullName?.charAt(0).toUpperCase() || "U"}
                     </div>
                     <div className="text-white">
@@ -131,17 +131,17 @@ const SearchUsers = () => {
 
                   {/* Info Section */}
                   <div className="px-6 py-4 text-sm text-gray-700">
-                    <p className=""><span className="font-medium">Education:</span> {user.EducationLevel || "N/A"}</p>
+                    <p><span className="font-medium">Education:</span> {user.EducationLevel || "N/A"}</p>
                     <p className="mb-2"><span className="font-medium">Subject:</span> {user.Subject || "N/A"}</p>
 
                     <div className="flex justify-between items-center mb-1">
-  <p><span className="font-medium">Country:</span> {user.Country || "N/A"}</p>
-  <button
-    onClick={() => handleChatClick(user._id)}
-    className="inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-800 text-white px-4 py-2 rounded-full text-sm font-medium transition cursor-pointer"
-  >
-    <FaComments />
-  </button>
+                      <p><span className="font-medium">Country:</span> {user.Country || "N/A"}</p>
+                      <button
+                        onClick={() => handleChatClick(user._id)}
+                        className="inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-800 text-white px-4 py-2 rounded-full text-sm font-medium transition cursor-pointer"
+                      >
+                        <FaComments />
+                      </button>
                     </div>
                   </div>
                 </motion.div>

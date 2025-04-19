@@ -14,6 +14,7 @@ const Quiz = ({ children }) => {
           <Link to="" className="pb-1 border-b-3 font-semibold text-teal-700 border-white hover:border-teal-700">FlashCard Sets</Link>
           <Link to="/uploadquiz" className="pb-1 border-b-3 font-semibold text-teal-700 border-white hover:border-teal-700">Upload files</Link>
           <Link to="/pastetextquiz" className="pb-1 border-b-3 font-semibold text-teal-700 border-white hover:border-teal-700">Paste texts</Link>
+          <Link to="/quizhistory" className="pb-1 border-b-3 font-semibold text-teal-700 border-white hover:border-teal-700">View Past Quizzes</Link>
         </div>
         <div className="flex-1">{children}</div>
       </div>

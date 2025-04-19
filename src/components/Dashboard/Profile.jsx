@@ -8,7 +8,10 @@ import {
   BookOpen,
   Goal,
   PencilLine,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
+import { Country, State } from "country-state-city";
 import Dashboard from "./Dashboard";
 
 const Profile = () => {
@@ -25,6 +28,9 @@ const Profile = () => {
 
   const [profilePreview, setProfilePreview] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
+  const [expandedSection, setExpandedSection] = useState("userInfo");
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -40,7 +46,17 @@ const Profile = () => {
         setProfilePreview(`http://localhost:7000/${res.data.ProfilePicture}`);
       })
       .catch((err) => console.log(err));
+
+    setCountries(Country.getAllCountries());
   }, []);
+
+  useEffect(() => {
+    if (user.Country) {
+      setStates(State.getStatesOfCountry(user.Country));
+    } else {
+      setStates([]);
+    }
+  }, [user.Country]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -76,6 +92,31 @@ const Profile = () => {
     }
   };
 
+  const renderSection = (title, icon, content, sectionKey) => (
+    <div className="mb-6">
+      <button
+        type="button"
+        onClick={() => setExpandedSection(expandedSection === sectionKey ? "" : sectionKey)}
+        className="w-full flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+      >
+        <div className="flex items-center space-x-3">
+          {icon}
+          <span className="text-lg font-medium text-gray-800">{title}</span>
+        </div>
+        {expandedSection === sectionKey ? (
+          <ChevronUp className="text-gray-500" />
+        ) : (
+          <ChevronDown className="text-gray-500" />
+        )}
+      </button>
+      {expandedSection === sectionKey && (
+        <div className="mt-4 p-6 bg-white rounded-lg shadow-sm">
+          {content}
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <div className="flex h-screen">
       <Dashboard />
@@ -85,7 +126,7 @@ const Profile = () => {
             {/* Profile Sidebar */}
             <div className="bg-[radial-gradient(at_20%_30%,#0f766e_0%,transparent_40%),radial-gradient(at_80%_20%,#0e7490_0%,transparent_50%),radial-gradient(at_50%_80%,#0f766e_0%,transparent_45%),radial-gradient(at_70%_60%,#115e59_0%,transparent_40%)] bg-teal-900
  p-6 flex flex-col items-center justify-center text-center border-r border-gray-200">
-                <img
+              <img
                 src={profilePreview || "/default-profile.png"}
                 alt="Profile"
                 className="w-32 h-32 rounded-full object-cover shadow-md"
@@ -108,71 +149,132 @@ const Profile = () => {
                 <p className="text-sm text-white">Country: {user.Country}</p>
               </div>
             </div>
-  
+
             {/* Profile Form */}
-            <div className="col-span-2 p-8">
-              <h3 className="text-2xl font-semibold text-teal-700 mb-6">Account Settings</h3>
-  
-              <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <InputField
-                  icon={<User className="w-4 h-4 text-gray-500" />}
-                  name="FullName"
-                  value={user.FullName}
-                  placeholder="Full Name"
-                  onChange={handleInputChange}
-                />
-                <InputField
-                  icon={<PencilLine className="w-4 h-4 text-gray-500" />}
-                  name="UserName"
-                  value={user.UserName}
-                  placeholder="Username"
-                  onChange={handleInputChange}
-                />
-                <InputField
-                  icon={<Mail className="w-4 h-4 text-gray-500" />}
-                  name="Email"
-                  value={user.Email}
-                  placeholder="Email"
-                  disabled
-                  readOnly
-                  className="bg-gray-100 cursor-not-allowed"
-                />
-                <InputField
-                  icon={<Globe className="w-4 h-4 text-gray-500" />}
-                  name="Country"
-                  value={user.Country}
-                  placeholder="Country"
-                  onChange={handleInputChange}
-                />
-                <InputField
-                  icon={<Globe className="w-4 h-4 text-gray-500" />}
-                  name="State"
-                  value={user.State}
-                  placeholder="State"
-                  onChange={handleInputChange}
-                />
-                <InputField
-                  icon={<BookOpen className="w-4 h-4 text-gray-500" />}
-                  name="EducationLevel"
-                  value={user.EducationLevel}
-                  placeholder="Education Level"
-                  onChange={handleInputChange}
-                />
-                <InputField
-                  icon={<BookOpen className="w-4 h-4 text-gray-500" />}
-                  name="Subject"
-                  value={user.Subject}
-                  placeholder="Subject"
-                  onChange={handleInputChange}
-                />
-                <InputField
-                  icon={<Goal className="w-4 h-4 text-gray-500" />}
-                  name="StudyGoals"
-                  value={user.StudyGoals}
-                  placeholder="Study Goals"
-                  onChange={handleInputChange}
-                />
-  
+            <div className="col-span-2 p-8 h-[400px]">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-2xl font-semibold text-teal-700">Account Settings</h3>
+                <div className="relative">
+                  <select
+                    value={expandedSection}
+                    onChange={(e) => setExpandedSection(e.target.value)}
+                    className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  >
+                    <option value="userInfo">User Information</option>
+                    <option value="location">Location</option>
+                    <option value="study">Study Preferences</option>
+                  </select>
+                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                    <ChevronDown className="w-4 h-4 text-gray-500" />
+                  </div>
+                </div>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {expandedSection === "userInfo" && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <InputField
+                      icon={<User className="w-4 h-4 text-gray-500" />}
+                      name="FullName"
+                      value={user.FullName}
+                      placeholder="Full Name"
+                      onChange={handleInputChange}
+                    />
+                    <InputField
+                      icon={<PencilLine className="w-4 h-4 text-gray-500" />}
+                      name="UserName"
+                      value={user.UserName}
+                      placeholder="Username"
+                      onChange={handleInputChange}
+                    />
+                    <InputField
+                      icon={<Mail className="w-4 h-4 text-gray-500" />}
+                      name="Email"
+                      value={user.Email}
+                      placeholder="Email"
+                      disabled
+                      readOnly
+                      className="bg-gray-100 cursor-not-allowed"
+                    />
+                  </div>
+                )}
+
+                {expandedSection === "location" && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="relative">
+                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                        <Globe className="w-4 h-4 text-gray-500" />
+                      </div>
+                      <select
+                        name="Country"
+                        value={user.Country}
+                        onChange={handleInputChange}
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-150"
+                      >
+                        <option value="">Select Country</option>
+                        {countries.map((country) => (
+                          <option key={country.isoCode} value={country.isoCode}>
+                            {country.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="relative">
+                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                        <Globe className="w-4 h-4 text-gray-500" />
+                      </div>
+                      <select
+                        name="State"
+                        value={user.State}
+                        onChange={handleInputChange}
+                        disabled={!user.Country}
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-150"
+                      >
+                        <option value="">Select State</option>
+                        {states.map((state) => (
+                          <option key={state.isoCode} value={state.name}>
+                            {state.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                )}
+
+                {expandedSection === "study" && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <InputField
+                      icon={<BookOpen className="w-4 h-4 text-gray-500" />}
+                      name="EducationLevel"
+                      value={user.EducationLevel}
+                      placeholder="Education Level"
+                      onChange={handleInputChange}
+                    />
+                    <InputField
+                      icon={<BookOpen className="w-4 h-4 text-gray-500" />}
+                      name="Subject"
+                      value={user.Subject}
+                      placeholder="Subject"
+                      onChange={handleInputChange}
+                    />
+                    <div className="md:col-span-2">
+                      <div className="relative">
+                        <div className="absolute left-3 top-3">
+                          <Goal className="w-4 h-4 text-gray-500" />
+                        </div>
+                        <textarea
+                          name="StudyGoals"
+                          value={user.StudyGoals}
+                          onChange={handleInputChange}
+                          placeholder="Study Goals"
+                          rows={4}
+                          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-150"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <div className="col-span-1 md:col-span-2 mt-6">
                   <button
                     type="submit"
@@ -188,7 +290,6 @@ const Profile = () => {
       </div>
     </div>
   );
-  
 };
 
 // Reusable Input Field

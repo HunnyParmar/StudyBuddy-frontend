@@ -23,6 +23,7 @@ import FolderView from './components/Dashboard/FlashCard/FolderView ';
 import FlashcardsByTopic from './components/Dashboard/FlashCard/FlashcardsByTopic';
 import Profile from "./components/Dashboard/Profile";
 import QuizHistory from "./components/Dashboard/Quiz/QuizHistory";
+import { LeaderBoard } from "./components/Dashboard/LeaderBoard/LeaderBoard";
 
 const PrivateRoute = () => {
     const token = localStorage.getItem("token");
@@ -52,6 +53,7 @@ function App() {
 
           <Route path="/profile" element={<Profile/>} />
           <Route path="/todo" element={<ToDoList/>} />
+          <Route path="/leaderboard" element={<LeaderBoard/>} />
           {/* FlashCard */}
           <Route path="/flashcard" element={<FlashCard/>} />
           <Route path="/setflashcard" element={<SetFlashCard/>} />
