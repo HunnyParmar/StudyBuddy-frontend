@@ -88,7 +88,7 @@ const Dashboard = () => {
           </h2>
 
           <ul className="mt-4 space-y-4">
-            <Link to="/dashboard">
+            <Link to="/progress">
               <motion.li
                 whileHover={{ scale: 1.05, backgroundColor: "#E6FFFA" }}
                 className="flex items-center space-x-3 px-3 py-2 rounded-md cursor-pointer mb-4"

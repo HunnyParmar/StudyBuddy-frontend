@@ -24,6 +24,7 @@ import FlashcardsByTopic from './components/Dashboard/FlashCard/FlashcardsByTopi
 import Profile from "./components/Dashboard/Profile";
 import QuizHistory from "./components/Dashboard/Quiz/QuizHistory";
 import { LeaderBoard } from "./components/Dashboard/LeaderBoard/LeaderBoard";
+import ProgressTracker from "./components/Dashboard/Progress/ProgressTracker";
 
 const PrivateRoute = () => {
     const token = localStorage.getItem("token");
@@ -74,7 +75,7 @@ function App() {
           <Route path="/qanda" element={<QandA/>} />
           <Route path="/quizhistory" element={<QuizHistory/>} />
           
-
+          <Route path="/progress" element={<ProgressTracker/>} />
           {/* Live Chat */}
           <Route path="/homepage" element={<HomePage/>} />
           
