@@ -5,7 +5,8 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import Dashboard from "../Dashboard";
-const COLORS = ['#4ade80', '#f87171', '#60a5fa', '#fbbf24'];
+
+const COLORS = ['#2CA4BF', '#1E3A8A', '#94A3B8', '#CBD5E1']; // teal, navy blue, light gray, slate gray
 
 const ProgressTracker = () => {
   const [progress, setProgress] = useState(null);
@@ -29,94 +30,85 @@ const ProgressTracker = () => {
     fetchProgress();
   }, [token]);
 
-  if (loading) return <p className="text-center mt-10">Loading progress...</p>;
-  if (!progress) return <p className="text-center mt-10">No progress found.</p>;
+  if (loading) return <p className="text-center mt-10 text-gray-500">Loading progress...</p>;
+  if (!progress) return <p className="text-center mt-10 text-gray-500">No progress found.</p>;
 
-  // Flashcard Chart Data
   const flashcardChartData = [
     { name: 'Reviewed', value: progress.flashcardsCompleted || 0 },
     { name: 'Remaining', value: (progress.totalFlashcards || 50) - (progress.flashcardsCompleted || 0) },
   ];
 
-  // Quiz Chart Data
   const quizChartData = [
     { name: 'Quizzes Taken', value: progress.quizzesTaken || 0 },
     { name: 'Total Score', value: progress.totalQuizScore || 0 },
-    { name: 'Time Spent (min)', value: Math.floor(progress.totalTimeSpent / 60) || 0 },  // Converting time to minutes
+    { name: 'Time Spent (min)', value: Math.floor(progress.totalTimeSpent / 60) || 0 },
   ];
 
   return (
-    <div className="flex h-screen">
-          <Dashboard />
-          <div className="flex-1 flex flex-col mt-15 bg-teal-100/20 overflow-auto p-6 pt-5 md:pt-10 ">
-            
-    {/* <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-md space-y-10"> */}
-      <h1 className="text-3xl font-bold text-center text-blue-600">📈 Study Progress Overview</h1>
+    <div className="flex h-screen bg-white">
+      <Dashboard />
+      <div className="flex-1 overflow-auto p-6 pt-10 bg-gray-100">
+        <div className="max-w-5xl mt-9 mx-auto space-y-10">
+          <h1 className="text-3xl font-bold text-center text-[#2CA4BF]">📈 Study Progress Overview</h1>
 
-      {/* Charts Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        {/* Flashcard Pie Chart */}
-        <div className="text-center">
-          <h2 className="text-lg font-semibold mb-4">Flashcard Progress</h2>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
-              <Pie
-                data={flashcardChartData}
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                label
-                dataKey="value"
-              >
-                {flashcardChartData.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-white rounded-2xl p-6 shadow-md">
+              <h2 className="text-lg font-semibold text-[#1E3A8A] mb-4">Flashcard Progress</h2>
+              <ResponsiveContainer width="100%" height={250}>
+                <PieChart>
+                  <Pie
+                    data={flashcardChartData}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    label
+                    dataKey="value"
+                  >
+                    {flashcardChartData.map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-md">
+              <h2 className="text-lg font-semibold text-[#1E3A8A] mb-4">Quiz Progress</h2>
+              <ResponsiveContainer width="100%" height={250}>
+                <BarChart data={quizChartData}>
+                  <XAxis dataKey="name" stroke="#1E3A8A" />
+                  <YAxis stroke="#1E3A8A" />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="value" fill="#2CA4BF" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl p-6 shadow-md">
+            <h2 className="text-xl font-bold text-[#1E3A8A]">📝 Recently Reviewed Flashcards</h2>
+            {progress.flashcards && progress.flashcards.length === 0 ? (
+              <p className="text-gray-500 mt-2">No flashcards reviewed yet.</p>
+            ) : (
+              <ul className="list-disc list-inside mt-4 text-sm text-gray-700">
+                {progress.flashcards && progress.flashcards.map((card) => (
+                  <li key={card._id}>
+                    <strong>ID:</strong> {card.flashcardId} – <strong>Reviewed:</strong> {new Date(card.lastReviewed).toLocaleString()} – <strong>Count:</strong> {card.reviewCount}
+                  </li>
                 ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
+              </ul>
+            )}
+          </div>
 
-        {/* Quiz Bar Chart */}
-        <div className="text-center">
-          <h2 className="text-lg font-semibold mb-4">Quiz Progress</h2>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={quizChartData}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="value" fill="#60a5fa" />
-            </BarChart>
-          </ResponsiveContainer>
+          <div className="bg-white rounded-2xl p-6 shadow-md">
+            <h2 className="text-xl font-bold text-[#1E3A8A]">🕒 Last Updated</h2>
+            <p className="text-sm text-gray-600 mt-2">{new Date(progress.lastUpdated).toLocaleString()}</p>
+          </div>
         </div>
       </div>
-
-      {/* Additional Info Section */}
-      <div>
-        <h2 className="text-xl font-bold mt-8">📝 Recently Reviewed Flashcards</h2>
-        {progress.flashcards && progress.flashcards.length === 0 ? (
-          <p className="text-gray-500">No flashcards reviewed yet.</p>
-        ) : (
-          <ul className="list-disc list-inside mt-2">
-            {progress.flashcards && progress.flashcards.map((card) => (
-              <li key={card._id} className="text-sm">
-                <strong>ID:</strong> {card.flashcardId} – <strong>Reviewed:</strong>{' '}
-                {new Date(card.lastReviewed).toLocaleString()} – <strong>Count:</strong>{' '}
-                {card.reviewCount}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      <div>
-        <h2 className="text-xl font-bold mt-6">🕒 Last Updated</h2>
-        <p className="text-sm text-gray-600">{new Date(progress.lastUpdated).toLocaleString()}</p>
-      </div>
     </div>
-    </div>
-    // </div>
   );
 };
 
