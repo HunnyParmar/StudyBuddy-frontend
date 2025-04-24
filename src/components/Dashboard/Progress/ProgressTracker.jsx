@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import Dashboard from "../Dashboard";
 
-const COLORS = ['#2CA4BF', '#1E3A8A', '#94A3B8', '#CBD5E1']; // teal, navy blue, light gray, slate gray
+const COLORS = ['#3DAA93', '#0B154C', '#94A3B8', '#CBD5E1']; // teal, navy blue, light gray, slate gray
 
 const ProgressTracker = () => {
   const [progress, setProgress] = useState(null);
@@ -48,12 +48,12 @@ const ProgressTracker = () => {
     <div className="flex h-screen bg-white">
       <Dashboard />
       <div className="flex-1 overflow-auto p-6 pt-10 bg-gray-100">
-        <div className="max-w-5xl mt-9 mx-auto space-y-10">
-          <h1 className="text-3xl font-bold text-center text-[#2CA4BF]">📈 Study Progress Overview</h1>
+        <div className="max-w-5xl mt-12 mx-auto space-y-10">
+          <h1 className="text-3xl font-bold text-left text-black">Study Progress Overview</h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white rounded-2xl p-6 shadow-md">
-              <h2 className="text-lg font-semibold text-[#1E3A8A] mb-4">Flashcard Progress</h2>
+              <h2 className="text-lg font-semibold text-[#0B192C] mb-4">Flashcard Progress</h2>
               <ResponsiveContainer width="100%" height={250}>
                 <PieChart>
                   <Pie
@@ -74,36 +74,21 @@ const ProgressTracker = () => {
             </div>
 
             <div className="bg-white rounded-2xl p-6 shadow-md">
-              <h2 className="text-lg font-semibold text-[#1E3A8A] mb-4">Quiz Progress</h2>
+              <h2 className="text-lg font-semibold text-[#0B192C] mb-4">Quiz Progress</h2>
               <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={quizChartData}>
-                  <XAxis dataKey="name" stroke="#1E3A8A" />
-                  <YAxis stroke="#1E3A8A" />
+                  <XAxis dataKey="name" stroke="#0B192C" />
+                  <YAxis stroke="#0B192C" />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="value" fill="#2CA4BF" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="value" fill="#3DAA93" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </div>
 
           <div className="bg-white rounded-2xl p-6 shadow-md">
-            <h2 className="text-xl font-bold text-[#1E3A8A]">📝 Recently Reviewed Flashcards</h2>
-            {progress.flashcards && progress.flashcards.length === 0 ? (
-              <p className="text-gray-500 mt-2">No flashcards reviewed yet.</p>
-            ) : (
-              <ul className="list-disc list-inside mt-4 text-sm text-gray-700">
-                {progress.flashcards && progress.flashcards.map((card) => (
-                  <li key={card._id}>
-                    <strong>ID:</strong> {card.flashcardId} – <strong>Reviewed:</strong> {new Date(card.lastReviewed).toLocaleString()} – <strong>Count:</strong> {card.reviewCount}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className="bg-white rounded-2xl p-6 shadow-md">
-            <h2 className="text-xl font-bold text-[#1E3A8A]">🕒 Last Updated</h2>
+            <h2 className="text-xl font-bold text-[#0B192C]">🕒 Last Updated</h2>
             <p className="text-sm text-gray-600 mt-2">{new Date(progress.lastUpdated).toLocaleString()}</p>
           </div>
         </div>

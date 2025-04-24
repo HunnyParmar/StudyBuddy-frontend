@@ -27,7 +27,7 @@ const LogIn = () => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
       connectSocket();
-      navigate("/dashboard");
+      navigate("/progress");
 
     } catch (err) {
       const message = err.response?.data?.message || "Something went wrong";

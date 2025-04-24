@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { IoChevronBackSharp } from "react-icons/io5";
 
 const QandA = () => {
   const location = useLocation();
@@ -93,6 +95,9 @@ const QandA = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-4">
+      <Link to="/uploadquiz">
+        <IoChevronBackSharp className="text-[#0B192C] bg-white/80 p-2 text-4xl border-1 rounded-full fixed top-4 left-4" />
+      </Link>
       <h2 className="text-2xl font-bold mb-4">Quiz</h2>
       <p className="mb-4">
         ⏱ Time Left: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, "0")}

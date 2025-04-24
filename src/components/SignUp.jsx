@@ -83,7 +83,7 @@ const SignUp = () => {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
         connectSocket();
-        navigate("/dashboard");
+        navigate("/progress");
       } else {
         console.log("Signup Failed:", data.message);
       }

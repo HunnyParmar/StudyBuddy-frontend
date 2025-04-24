@@ -70,26 +70,34 @@ const FlashcardsByTopic = () => {
 
             {/* Card Animation */}
             <AnimatePresence mode="wait">
-              <motion.div
-                key={flashcards[currentIndex]._id}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.4 }}
-                className="w-[600px] h-[380px] border rounded-2xl p-6 shadow-md bg-white flex flex-col justify-center items-center text-center"
-              >
-                <h3 className="text-xl font-semibold mb-2">{flashcards[currentIndex].question}</h3>
-                <p className="text-gray-700">{flashcards[currentIndex].answer}</p>
-                {flashcards[currentIndex].image && (
-                  <div className="mt-4 flex justify-center">
-                    <img
-                      src={flashcards[currentIndex].image}
-                      alt="flashcard visual"
-                      className="w-[200px] h-[200px] object-cover rounded"
-                    />
-                  </div>
-                )}
-              </motion.div>
+            <motion.div
+  key={flashcards[currentIndex]._id}
+  initial={{ opacity: 0, x: 50 }}
+  animate={{ opacity: 1, x: 0 }}
+  exit={{ opacity: 0, x: -50 }}
+  transition={{ duration: 0.4 }}
+  className="w-[600px] h-[380px] border rounded-2xl p-6 shadow-md bg-white flex flex-row items-start gap-6"
+>
+  {/* Left: Text Content */}
+  <div className="w-2/3 flex flex-col justify-start">
+    <h3 className="text-3xl font-bold mb-3 text-gray-800">
+      {flashcards[currentIndex].question}
+    </h3>
+    <p className="text-base text-gray-700">{flashcards[currentIndex].answer}</p>
+  </div>
+
+  {/* Right: Image */}
+  {flashcards[currentIndex].image && (
+    <div className="w-1/3 flex justify-center items-center">
+      <img
+        src={flashcards[currentIndex].image}
+        alt="flashcard visual"
+        className="max-h-[300px] object-cover rounded-xl"
+      />
+    </div>
+  )}
+</motion.div>
+
             </AnimatePresence>
 
             {/* Right Arrow */}

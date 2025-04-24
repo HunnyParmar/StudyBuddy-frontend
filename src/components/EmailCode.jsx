@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "../App/axios"; // ✅ using baseURL from custom axios
-
+import { IoChevronBackSharp } from "react-icons/io5";
+import { Link } from 'react-router-dom';
 const EmailCode = () => {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
@@ -32,6 +33,9 @@ const EmailCode = () => {
   return (
     <>
       <div className="bg-gradient-to-bl from-[#053F5E] to-gray-100 to-teal-100 bg-cover bg-center h-screen w-full">
+      <Link to="/login">
+          <IoChevronBackSharp className='text-[#0B192C] bg-white/80 p-1 text-4xl border-1 rounded-full fixed top-4 left-4'/>
+        </Link>
         <div className="flex justify-center items-center min-h-screen">
           <div className="w-full max-w-lg h-auto p-8 shadow-2xl bg-white/70 rounded-3xl backdrop-blur-md">
             <h2 className="text-3xl font-bold text-center mb-6 text-[#0B192C]">Enter Code</h2>

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { IoChevronBackSharp } from "react-icons/io5";
 
 const QuizHistory = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -27,8 +29,11 @@ const QuizHistory = () => {
 
   return (
     <div className="flex h-screen">
+      <Link to="/uploadquiz">
+              <IoChevronBackSharp className="text-[#0B192C] bg-white/80 p-2 text-4xl border-1 rounded-full fixed top-4 left-4" />
+            </Link>
       <div className="flex-1 bg-gray-50 p-6 overflow-y-auto">
-        <h1 className="text-3xl font-bold mb-4 text-teal-800">Your Quiz History</h1>
+        <h1 className="text-3xl font-bold mb-4 ml-8 text-teal-800">Your Quiz History</h1>
 
         <div className="mb-6 p-4 bg-teal-100 border-l-4 border-teal-500 text-teal-900 shadow-sm rounded">
           <p className="text-lg font-semibold">

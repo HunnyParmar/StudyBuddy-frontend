@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { FaHome, FaListAlt, FaSearch, FaQuestionCircle, FaBell } from "react-icons/fa";
 import { IoLogOutSharp } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
+import { LuListTodo } from "react-icons/lu";
 import { useAuthStore } from '../../Store/useAuthStore';
 import axios from "../../App/axios"; // ✅ using base axios
 import { motion } from "framer-motion";
@@ -103,7 +104,7 @@ const Dashboard = () => {
                 whileHover={{ scale: 1.05, backgroundColor: "#E6FFFA" }}
                 className="flex items-center space-x-3 px-3 py-2 rounded-md cursor-pointer mb-4"
               >
-                <FaListAlt className="text-teal-600" />
+                <LuListTodo className="text-teal-600" />
                 <span className="text-gray-700 text-base">To-Do List</span>
               </motion.li>
             </Link>
@@ -128,7 +129,7 @@ const Dashboard = () => {
               </motion.li>
             </Link>
 
-            <Link to="/quiz">
+            <Link to="/uploadquiz">
               <motion.li
                 whileHover={{ scale: 1.05, backgroundColor: "#E6FFFA" }}
                 className="flex items-center space-x-3 px-3 py-2 rounded-md cursor-pointer mb-4"
