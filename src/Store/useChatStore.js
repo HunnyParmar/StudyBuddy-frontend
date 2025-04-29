@@ -6,7 +6,7 @@ import { useAuthStore } from "./useAuthStore";
 const getToken = () => localStorage.getItem("token");
 
 const api = axios.create({
-  baseURL: "http://localhost:7000/user",
+  baseURL: "https://study-buddy-aryh.onrender.com/user",
 });
 
 // Zustand Store

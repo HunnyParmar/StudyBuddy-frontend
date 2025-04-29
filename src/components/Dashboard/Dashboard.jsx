@@ -7,6 +7,7 @@ import { LuListTodo } from "react-icons/lu";
 import { useAuthStore } from '../../Store/useAuthStore';
 import axios from "../../App/axios"; // ✅ using base axios
 import { motion } from "framer-motion";
+import { MdLeaderboard } from "react-icons/md";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -153,7 +154,7 @@ const Dashboard = () => {
                 whileHover={{ scale: 1.05, backgroundColor: "#E6FFFA" }}
                 className="flex items-center space-x-3 px-3 py-2 rounded-md cursor-pointer mb-4"
               >
-                <FaBell className="text-teal-600" />
+                <MdLeaderboard className="text-teal-600" />
                 <span className="text-gray-700 text-base">Leader Board</span>
               </motion.li>
             </Link>
@@ -176,9 +177,9 @@ const Dashboard = () => {
 
               {userData.ProfilePicture ? (
                 <img
-                  src={userData.ProfilePicture.includes('?t=')
-                    ? `http://localhost:7000/${userData.ProfilePicture}`
-                    : `http://localhost:7000/${userData.ProfilePicture}?t=${Date.now()}`}
+                src={`${axios.defaults.baseURL}/${userData.ProfilePicture}${
+                  userData.ProfilePicture.includes("?t=") ? "" : `?t=${Date.now()}`
+                }`}
                   alt="Profile"
                   className="w-10 h-10 rounded-full object-cover border border-gray-300"
                 />

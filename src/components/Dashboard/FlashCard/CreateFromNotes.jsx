@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import axios from "../../../App/axios"; // ✅ Use custom axios instance
+import axios from "../../../App/axios"; // ✅ Use your custom axios instance
 import { useNavigate } from "react-router-dom";
 
 const CreateFromNotes = () => {
   const [notesText, setNotesText] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false); // optional: show loading spinner
   const navigate = useNavigate();
 
   const handleGenerateQuestions = async () => {
@@ -20,18 +21,20 @@ const CreateFromNotes = () => {
     }
 
     try {
+      setLoading(true); // start loading
+
       const response = await axios.post(
-        "/user/flashcards", // ✅ Use relative path
+        "/user/flashcards", // ✅ Correct endpoint
         { text: notesText },
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, 
           },
         }
       );
 
-      console.log("API Response:", response.data); 
+      console.log("API Response:", response.data);
 
       if (response.data.flashcards?.length > 0) {
         setMessage("Flashcards generated successfully!");
@@ -40,19 +43,40 @@ const CreateFromNotes = () => {
           id: index + 1,
           term: card.question || "",
           definition: card.answer || "",
-          image: "",
+          image: card.image || "", // ✅ Handle image if present
         }));
 
-        console.log("Formatted Flashcards:", formattedFlashcards); 
+        console.log("Formatted Flashcards:", formattedFlashcards);
+
         navigate("/setflashcard", { state: { flashcards: formattedFlashcards } });
       } else {
         setMessage("AI did not generate enough flashcards.");
       }
     } catch (error) {
-      setMessage(error.response?.data?.message || "Error generating flashcards.");
+      console.error("Error:", error);
+      setMessage(error.response?.data?.error || "Error generating flashcards.");
+    } finally {
+      setLoading(false); // stop loading
     }
   };
-  
+
+  return (
+    <div>
+      <h2>Create Flashcards from Notes</h2>
+      <textarea
+        value={notesText}
+        onChange={(e) => setNotesText(e.target.value)}
+        placeholder="Enter your notes here"
+        rows="10"
+        cols="50"
+      />
+      <br />
+      <button onClick={handleGenerateQuestions} disabled={loading}>
+        {loading ? "Generating..." : "Generate Flashcards"}
+      </button>
+      {message && <p>{message}</p>}
+    </div>
+  );
 };
 
 export default CreateFromNotes;

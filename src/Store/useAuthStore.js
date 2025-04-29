@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { io } from "socket.io-client";
 import { useChatStore } from "./useChatStore";
 
-const BASE_URL = "http://localhost:7000";
+const BASE_URL = "https://study-buddy-aryh.onrender.com";
 
 export const useAuthStore = create((set, get) => ({
   onlineUsers: [],

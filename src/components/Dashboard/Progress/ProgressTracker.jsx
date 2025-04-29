@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../../../App/axios'; // ✅ Use custom axios instance
 import {
   PieChart, Pie, Cell,
   BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer
@@ -16,7 +16,7 @@ const ProgressTracker = () => {
   useEffect(() => {
     const fetchProgress = async () => {
       try {
-        const res = await axios.get('http://localhost:7000/progress/', {
+        const res = await axios.get('/progress/', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setProgress(res.data);
@@ -26,9 +26,10 @@ const ProgressTracker = () => {
         setLoading(false);
       }
     };
-
+  
     fetchProgress();
   }, [token]);
+  
 
   if (loading) return <p className="text-center mt-10 text-gray-500">Loading progress...</p>;
   if (!progress) return <p className="text-center mt-10 text-gray-500">No progress found.</p>;

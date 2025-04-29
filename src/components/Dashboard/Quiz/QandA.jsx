@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
+import axios from "../../../App/axios";
 import { Link } from "react-router-dom";
 import { IoChevronBackSharp } from "react-icons/io5";
 
@@ -60,7 +60,7 @@ const QandA = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:7000/quiz/quiz/submit",
+        "/quiz/quiz/submit",
         {
           quizId: quizIds,
           answers: gradedQuestions,

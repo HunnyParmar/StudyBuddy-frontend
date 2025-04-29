@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../../App/axios";
 
 const QuizSubmission = ({ quizData }) => {
   const navigate = useNavigate();
@@ -9,19 +9,20 @@ const QuizSubmission = ({ quizData }) => {
     try {
       const questionIds = quizData.map(q => q._id);
       const userAnswers = quizData.map(q => q.selectedAnswer);
-
-      const response = await axios.post("http://localhost:7000/quiz/quiz/submit", {
+  
+      const response = await axios.post("/quiz/quiz/submit", {
         userId: "user-id-here",
         questionIds,
         userAnswers,
       });
-
+  
       console.log("Quiz submitted successfully:", response.data);
       navigate("/quiz-history");
     } catch (error) {
       console.error("Error submitting quiz:", error);
     }
   };
+  
 
   return (
     <div className="quiz-submission">

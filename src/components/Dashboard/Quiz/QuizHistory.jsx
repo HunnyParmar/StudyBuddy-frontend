@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../../App/axios"; // ✅ Use custom axios instance
 import { Link } from "react-router-dom";
 import { IoChevronBackSharp } from "react-icons/io5";
 
@@ -9,11 +9,12 @@ const QuizHistory = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await axios.get("http://localhost:7000/quiz/quiz/history", {
+        const res = await axios.get("/quiz/quiz/history", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
+        
         console.log("Fetched quiz history:", res.data);
         setQuizzes(res.data.quizzes || []);
       } catch (error) {

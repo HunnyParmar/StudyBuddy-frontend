@@ -23,7 +23,7 @@
 
 // export default PasteTextQuiz;
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../../../App/axios";
 import { useNavigate } from "react-router-dom";
 import Quiz from "./Quiz";
 
@@ -36,7 +36,7 @@ const PasteTextQuiz = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:7000/quiz/quiz",
+        "/quiz/quiz",
         {
           sourceType: "text",
           topic: "General",
@@ -55,6 +55,7 @@ const PasteTextQuiz = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <Quiz>

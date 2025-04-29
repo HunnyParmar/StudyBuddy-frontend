@@ -1,6 +1,7 @@
+// src/pages/Flashcards/FolderView.jsx
 import React, { useEffect, useState } from "react";
-import axios from "../../../App/axios"; // ✅ Use custom axios instance
 import { useNavigate, Link } from "react-router-dom";
+import axios from "../../../App/axios";
 import { IoChevronBackSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
 
@@ -14,27 +15,22 @@ const FolderView = ({ type = "all" }) => {
     const fetchFolders = async () => {
       try {
         setLoading(true);
-
-        const endpoint =
-          type === 'user'
-            ? "/user/user/flashcards"
-            : "/user/flashcards/all"; // ✅ Use relative paths for API calls
-
-        const headers = localStorage.getItem("token")
-          ? { Authorization: `Bearer ${localStorage.getItem("token")}` }
-          : {};
+        const endpoint = type === "user" ? "/user/flashcards" : "/user/flashcards/all";
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
         const res = await axios.get(endpoint, { headers });
-
         const grouped = res.data.grouped || {};
-        const folderArray = Object.keys(grouped).map((topic) => ({
-          topic,
-          flashcardCount: grouped[topic].length,
+
+        const folderData = Object.keys(grouped).map(docId => ({
+          id: docId,
+          topic: grouped[docId][0]?.topic || "Untitled",
+          flashcardCount: grouped[docId].length,
         }));
 
-        setFolders(folderArray);
+        setFolders(folderData);
       } catch (err) {
-        console.error("Failed to fetch folders:", err);
+        console.error("Error fetching folders:", err);
         setFolders([]);
       } finally {
         setLoading(false);
@@ -44,16 +40,12 @@ const FolderView = ({ type = "all" }) => {
     fetchFolders();
   }, [type]);
 
-  const handleFolderClick = (topic) => {
-    const route =
-      type === "user"
-        ? `/my/topics/${encodeURIComponent(topic)}`
-        : `/topics/${encodeURIComponent(topic)}`;
-    navigate(route);
+  const handleFolderClick = (docId) => {
+    navigate(type === "user" ? `/my/topics/${docId}` : `/topics/${docId}`);
   };
 
   const filteredFolders = folders.filter((folder) =>
-    folder.topic?.toLowerCase().includes(search.toLowerCase())
+    folder.topic.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -61,6 +53,7 @@ const FolderView = ({ type = "all" }) => {
       <Link to="/flashcard">
         <IoChevronBackSharp className="text-[#0B192C] bg-white/80 p-2 text-4xl border-1 rounded-full fixed top-4 left-4" />
       </Link>
+
       <h1 className="text-3xl mt-4 font-bold mb-6 text-teal-600 text-center">
         {type === "user" ? "My Flashcard Folders" : "All Flashcard Folders"}
       </h1>
@@ -84,7 +77,7 @@ const FolderView = ({ type = "all" }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 w-full max-w-4xl">
             {filteredFolders.map((folder, index) => (
               <motion.div
-                key={folder.topic}
+                key={folder.id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -94,22 +87,22 @@ const FolderView = ({ type = "all" }) => {
                 }}
                 whileHover={{
                   scale: 1.03,
-                  transition: { duration: 0.15 }, // fast, no delay
+                  transition: { duration: 0.15 },
                 }}
                 whileTap={{
                   scale: 0.97,
-                  transition: { duration: 0.1 }, // instant tap feedback
+                  transition: { duration: 0.1 },
                 }}
                 viewport={{ once: true, amount: 0.2 }}
-                className="cursor-pointer bg-white border border-teal-100 p-6 rounded-2xl shadow-md hover:shadow-lg hover:shadow-teal-500 transition duration-300"
-                onClick={() => handleFolderClick(folder.topic)}
+                className="cursor-pointer bg-white border border-teal-100 p-6 rounded-2xl shadow-md hover:shadow-lg hover:shadow-teal-400 transition duration-300"
+                onClick={() => handleFolderClick(folder.id)}
               >
                 <h2 className="text-xl font-semibold text-teal-700 mb-2">
                   {folder.topic}
                 </h2>
                 <p className="text-sm text-gray-600">
                   {folder.flashcardCount} flashcard
-                  {folder.flashcardCount !== 1 ? "s" : ""}
+                  {folder.flashcardCount !== 1 && "s"}
                 </p>
               </motion.div>
             ))}

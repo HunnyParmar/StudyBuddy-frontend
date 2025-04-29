@@ -1,7 +1,8 @@
 import axios from "axios";
 console.log(import.meta.env);
 const instance = axios.create({
-  baseURL: "http://localhost:7000",
+  // baseURL: "http://localhost:7000",
+  baseURL: "https://study-buddy-aryh.onrender.com",
   
   headers: {
     "Content-Type": "application/json",

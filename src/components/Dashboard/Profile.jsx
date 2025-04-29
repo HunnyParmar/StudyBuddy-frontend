@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../App/axios";
 import {
   User,
   Mail,
@@ -36,16 +36,12 @@ const Profile = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .get("http://localhost:7000/user/details", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        setUser(res.data);
-        setProfilePreview(`http://localhost:7000/${res.data.ProfilePicture}`);
-      })
-      .catch((err) => console.log(err));
+  .get("/user/details")
+  .then((res) => {
+    setUser(res.data);
+    setProfilePreview(`${axios.defaults.baseURL}/${res.data.ProfilePicture}`);
+  })
+  .catch((err) => console.log(err));
 
     setCountries(Country.getAllCountries());
   }, []);
@@ -80,12 +76,12 @@ const Profile = () => {
     if (profileImage) formData.append("ProfilePicture", profileImage);
 
     try {
-      await axios.put("http://localhost:7000/user/update", formData, {
+      await await axios.put("/user/update", formData, {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
+      
       alert("✅ Profile updated successfully!");
     } catch (error) {
       console.error("Update failed", error);

@@ -34,49 +34,6 @@ const SetFlashCard = () => {
     );
   };
 
-  const handleFileUpload = async () => {
-    if (!selectedFile) {
-      setMessage("Please upload a file.");
-      return;
-    }
-
-    setLoading(true);
-
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    formData.append("topic", topicRef.current.value);
-
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setMessage("No token found. Please login.");
-        return;
-      }
-
-      const response = await axios.post("/user/flashcards", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const generatedFlashcards = response.data.flashcards.map((card, index) => ({
-        id: index + 1,
-        term: card.question || "",
-        definition: card.answer || "",
-        image: "",
-      }));
-
-      setFlashcards(generatedFlashcards);
-      setMessage("AI-generated flashcards added!");
-    } catch (error) {
-      console.error("File Upload Error:", error.response?.data || error.message);
-      setMessage(error.response?.data?.message || "Error generating flashcards.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleFileChange = (index, file) => {
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -87,6 +44,63 @@ const SetFlashCard = () => {
     }
   };
 
+  const handleFileSelect = (e) => {
+    setSelectedFile(e.target.files[0]);
+    setFileAdded(true);
+  };
+
+  const handleFileUpload = async () => {
+    if (!selectedFile) {
+      setMessage("Please upload a file.");
+      return;
+    }
+  
+    setLoading(true);
+  
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    formData.append("topic", topicRef.current.value);
+  
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setMessage("No token found. Please login.");
+        return;
+      }
+  
+      const response = await axios.post("/user/flashcards", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      console.log("File Upload Response:", response.data);
+  
+      if (!Array.isArray(response.data.flashcards)) {
+        setMessage("Unexpected response from server. Please try again.");
+        return;
+      }
+  
+      const generatedFlashcards = response.data.flashcards.map((card, index) => ({
+        id: index + 1,
+        term: card.question || "",
+        definition: card.answer || "",
+        image: "", // No image comes from AI, but keeping structure
+      }));
+  
+      setFlashcards(generatedFlashcards);
+      setMessage(`${generatedFlashcards.length} AI flashcards generated successfully!`);
+      setSelectedFile(null);
+      setFileAdded(false);
+    } catch (error) {
+      console.error("File Upload Error:", error.response?.data || error.message);
+      setMessage(error.response?.data?.message || "Error generating flashcards.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   const addFlashcard = () => {
     setFlashcards([...flashcards, { id: flashcards.length + 1, term: "", definition: "", image: "" }]);
   };
@@ -146,27 +160,18 @@ const SetFlashCard = () => {
     }
   };
 
-  const handleFileSelect = (e) => {
-    setSelectedFile(e.target.files[0]);
-    setFileAdded(true);
-  };
-
-
   return (
     <div className="relative min-h-screen overflow-auto">
-      {/* Blurred background image */}
-<div
-  className="absolute inset-0 bg-cover bg-center blur-sm z-[-1]"
-  style={{
-    backgroundImage: "url('https://i.etsystatic.com/7267538/r/il/eff5bd/2220380309/il_570xN.2220380309_mjdx.jpg')",
-  }}
-></div>
+      {/* Background */}
+      <div
+        className="absolute inset-0 bg-cover bg-center blur-sm z-[-1]"
+        style={{
+          backgroundImage: "url('https://i.etsystatic.com/7267538/r/il/eff5bd/2220380309/il_570xN.2220380309_mjdx.jpg')",
+        }}
+      ></div>
+      <div className="absolute inset-0 bg-teal-900/60 z-[-1]"></div>
 
-{/* Overlay */}
-<div className="absolute inset-0 bg-teal-900/60 z-[-1]"></div>
-
-
-      {/* Loading overlay */}
+      {/* Loading Spinner */}
       {loading && (
         <div className="fixed inset-0 bg-white/50 flex justify-center items-center z-50">
           <div className="w-16 h-16 ml-20 border-4 border-t-4 border-teal-700 rounded-full animate-spin"></div>
@@ -174,17 +179,15 @@ const SetFlashCard = () => {
         </div>
       )}
 
-      {/* Go Back Button */}
+      {/* Go Back */}
       <Link to="/flashcard">
         <IoChevronBackSharp className="text-[#0B192C] bg-white/80 p-1 text-3xl border-1 rounded-full fixed top-2 left-2 z-[999]" />
       </Link>
 
-      {/* Main content */}
+      {/* Content */}
       <div className="relative z-10 px-6 py-6">
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl mx-auto h-[90vh] overflow-y-auto">
-          <h1 className="text-3xl font-bold mt-2 text-[#143D60]">
-            CREATE A NEW FLASHCARD SET
-          </h1>
+          <h1 className="text-3xl font-bold mt-2 text-[#143D60]">CREATE A NEW FLASHCARD SET</h1>
 
           <input
             ref={topicRef}
@@ -210,6 +213,7 @@ const SetFlashCard = () => {
                 {fileAdded ? "File Added" : "+Import"}
               </div>
             </div>
+
             <Link
               to="/generatecard"
               className="cursor-pointer bg-teal-100/30 px-2 py-1 rounded-md shadow"
@@ -227,18 +231,14 @@ const SetFlashCard = () => {
                 type="text"
                 placeholder="Enter term"
                 value={card.term}
-                onChange={(e) =>
-                  handleInputChange(index, "term", e.target.value)
-                }
+                onChange={(e) => handleInputChange(index, "term", e.target.value)}
                 className="w-1/2 border-b-2 outline-none p-2 ml-2"
               />
               <input
                 type="text"
                 placeholder="Enter definition"
                 value={card.definition}
-                onChange={(e) =>
-                  handleInputChange(index, "definition", e.target.value)
-                }
+                onChange={(e) => handleInputChange(index, "definition", e.target.value)}
                 className="w-1/2 border-b-2 outline-none p-2 ml-4"
               />
 
@@ -247,9 +247,7 @@ const SetFlashCard = () => {
                   type="file"
                   id={`file-upload-${index}`}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  onChange={(e) =>
-                    handleFileChange(index, e.target.files[0])
-                  }
+                  onChange={(e) => handleFileChange(index, e.target.files[0])}
                 />
                 <div className="text-center bg-gray-200 px-3 py-1 rounded shadow cursor-pointer flex items-center">
                   🖼️ Image
@@ -267,35 +265,37 @@ const SetFlashCard = () => {
             </div>
           ))}
 
-          <button
-            onClick={addFlashcard}
-            className="cursor-pointer mt-6 px-6 py-2 bg-teal-700 text-white rounded-lg shadow"
-          >
-            + Add Flashcard
-          </button>
+          <div className="flex gap-4 mt-6">
+            <button
+              onClick={addFlashcard}
+              className="cursor-pointer px-6 py-2 bg-teal-700 text-white rounded-lg shadow"
+            >
+              + Add Flashcard
+            </button>
 
-          <button
-            onClick={handleSubmit}
-            className="cursor-pointer ml-6 mt-6 px-6 py-2 bg-teal-700 text-white rounded-lg shadow"
-          >
-            Submit
-          </button>
+            <button
+              onClick={handleSubmit}
+              className="cursor-pointer px-6 py-2 bg-teal-700 text-white rounded-lg shadow"
+            >
+              Submit
+            </button>
 
-          <button
-            onClick={handleFileUpload}
-            className="cursor-pointer ml-6 bg-teal-700 text-white px-4 py-2 rounded-md mt-4"
-          >
-            {loading ? (
-              <div className="flex items-center">
-                <div className="w-5 h-5 border-2 border-t-2 border-white rounded-full animate-spin"></div>
-                <span className="ml-2">Generating...</span>
-              </div>
-            ) : (
-              "Generate from File 📂"
-            )}
-          </button>
+            <button
+              onClick={handleFileUpload}
+              className="cursor-pointer bg-teal-700 text-white px-4 py-2 rounded-md"
+            >
+              {loading ? (
+                <div className="flex items-center">
+                  <div className="w-5 h-5 border-2 border-t-2 border-white rounded-full animate-spin"></div>
+                  <span className="ml-2">Generating...</span>
+                </div>
+              ) : (
+                "Generate from File 📂"
+              )}
+            </button>
+          </div>
 
-          {message && <div className="mt-4 text-green-600">{message}</div>}
+          {message && <p className="mt-4 text-center text-red-600">{message}</p>}
         </div>
       </div>
     </div>

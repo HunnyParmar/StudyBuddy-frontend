@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaMedal } from "react-icons/fa";
 import Dashboard from "../Dashboard";
-import axios from "axios";
+import axios from "../../../App/axios"; // ✅ Use custom axios instance
 
 export const LeaderBoard = () => {
   const [leaderboardData, setLeaderboardData] = useState([]);
@@ -10,7 +10,7 @@ export const LeaderBoard = () => {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const response = await axios.get("http://localhost:7000/leaderboard");
+        const response = await axios.get("/leaderboard"); // ✅ use base URL from axios instance
         setLeaderboardData(response.data.leaderboard || []);
         setLoading(false);
       } catch (error) {
@@ -18,9 +18,10 @@ export const LeaderBoard = () => {
         setLoading(false);
       }
     };
-
+  
     fetchLeaderboard();
   }, []);
+  
 
   return (
     <div className="flex h-screen">

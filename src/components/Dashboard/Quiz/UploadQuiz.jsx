@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../../../App/axios"; // ✅ Use custom axios instance
 import { useNavigate } from "react-router-dom"; // ← Import this
 import Quiz from "./Quiz";
 import { FaFileWord, FaFilePdf, FaFilePowerpoint } from "react-icons/fa";
@@ -14,33 +14,33 @@ const UploadQuiz = () => {
 
   const handleGenerate = async () => {
     if (!file) return;
-
+  
     const formData = new FormData();
     formData.append("file", file);
     formData.append("sourceType", "file");
     formData.append("topic", "General");
-
+  
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:7000/quiz/quiz", formData, {
+      const response = await axios.post("/quiz/quiz", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-
+  
       const quizData = response.data.quiz;
-      console.log(quizData)
+      console.log(quizData);
       if (quizData.length > 0) {
-        navigate("/qanda", { state: { quiz: quizData } }); // ← Go to QandA page
+        navigate("/qanda", { state: { quiz: quizData } });
       }
-
     } catch (error) {
       console.error("Upload error:", error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <Quiz>
