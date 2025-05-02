@@ -1,0 +1,62 @@
+.sudoku-container {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  .gridd {
+    display: grid;
+    grid-template-rows: repeat(9, 40px);
+    width: fit-content;
+    margin: auto;
+    border: 2px solid #333;
+  }
+  
+  .row {
+    display: grid;
+    grid-template-columns: repeat(9, 40px);
+  }
+  
+  .cell {
+    border: 1px solid #999;
+    text-align: center;
+    line-height: 40px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .prefilled {
+    background-color: #e0e0e0;
+  }
+  
+  .input {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+  }
+  
+  .input:focus {
+    outline: none;
+    border: 2px solid #666;
+  }
+  
+  .error {
+    background-color: #ffcccc;
+    border-color: red;
+  }
+  
+  .submit-btn {
+    margin-top: 15px;
+    padding: 8px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+
+  
+  

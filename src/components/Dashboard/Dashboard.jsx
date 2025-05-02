@@ -7,7 +7,7 @@ import { LuListTodo } from "react-icons/lu";
 import { useAuthStore } from '../../Store/useAuthStore';
 import axios from "../../App/axios"; // ✅ using base axios
 import { motion } from "framer-motion";
-import { MdLeaderboard } from "react-icons/md";
+import { MdLeaderboard,MdGames } from "react-icons/md";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -146,7 +146,7 @@ const Dashboard = () => {
                 className="flex items-center space-x-3 px-3 py-2 rounded-md cursor-pointer mb-4"
               >
                 <FaBell className="text-teal-600" />
-                <span className="text-gray-700 text-base">Notifications</span>
+                <span className="text-gray-700 text-base">Chat Corner</span>
               </motion.li>
             </Link>
             <Link to="/leaderboard">
@@ -156,6 +156,15 @@ const Dashboard = () => {
               >
                 <MdLeaderboard className="text-teal-600" />
                 <span className="text-gray-700 text-base">Leader Board</span>
+              </motion.li>
+            </Link>
+            <Link to="/games">
+              <motion.li
+                whileHover={{ scale: 1.05, backgroundColor: "#E6FFFA" }}
+                className="flex items-center space-x-3 px-3 py-2 rounded-md cursor-pointer mb-4"
+              >
+                <MdGames className="text-teal-600" />
+                <span className="text-gray-700 text-base">Getting Bored</span>
               </motion.li>
             </Link>
 

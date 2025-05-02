@@ -2,21 +2,19 @@ import { create } from "zustand";
 import { io } from "socket.io-client";
 import { useChatStore } from "./useChatStore";
 
-const BASE_URL = "https://study-buddy-aryh.onrender.com";
+
+const BASE_URL = "https://study-buddy-aryh.onrender.com"; // Use the correct HTTPS URL
 
 export const useAuthStore = create((set, get) => ({
-  onlineUsers: [],
-  socket: null,
-  incomingCall: null,
-  audioCallUser: null,
+  // other state variables and methods
 
-  // Connect to socket
   connectSocket: () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user || get().socket?.connected) return;
 
     const socket = io(BASE_URL, {
       query: { userId: user._id },
+      transports: ["websocket"], // Force WebSocket connection
     });
 
     socket.connect();
@@ -35,8 +33,6 @@ export const useAuthStore = create((set, get) => ({
       useChatStore.getState().setAudioCallUser(null);
       useChatStore.getState().clearIncomingCall?.(); // optional if ringing
     });
-       
-
   },
 
   endCall: () => {

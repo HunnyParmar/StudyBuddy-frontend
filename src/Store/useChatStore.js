@@ -7,6 +7,7 @@ const getToken = () => localStorage.getItem("token");
 
 const api = axios.create({
   baseURL: "https://study-buddy-aryh.onrender.com/user",
+  // baseURL: "https://localhost:7000/user",
 });
 
 // Zustand Store

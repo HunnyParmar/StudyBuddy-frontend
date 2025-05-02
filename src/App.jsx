@@ -25,6 +25,14 @@ import Profile from "./components/Dashboard/Profile";
 import QuizHistory from "./components/Dashboard/Quiz/QuizHistory";
 import { LeaderBoard } from "./components/Dashboard/LeaderBoard/LeaderBoard";
 import ProgressTracker from "./components/Dashboard/Progress/ProgressTracker";
+import GameDashboard from "./components/Dashboard/GameDashboard/GameDashboard";
+import MemoryMatch from "./components/Dashboard/GameDashboard/MemoryMatch/MemoryMatch";
+import ReactionSpeed from "./components/Dashboard/GameDashboard/ReactionSpeed";
+import TypingSpeedTest from "./components/Dashboard/GameDashboard/TypingSpeedTest";
+import AvoidTheBombs from "./components/Dashboard/GameDashboard/AvoidTheBombs";
+import SequenceMemoryGame from "./components/Dashboard/GameDashboard/SequenceMemoryGame";
+import WordGridHunt from "./components/Dashboard/GameDashboard/WordGridHunt";
+import Sudoku from "./components/Dashboard/GameDashboard/Sudoku";
 
 const PrivateRoute = () => {
     const token = localStorage.getItem("token");
@@ -78,6 +86,15 @@ function App() {
           <Route path="/progress" element={<ProgressTracker/>} />
           {/* Live Chat */}
           <Route path="/homepage" element={<HomePage/>} />
+          {/* Games */}
+          <Route path="/games" element={<GameDashboard/>}/>
+          <Route path="/games/memory-match" element={<MemoryMatch />} />
+          <Route path="/games/reaction-speed" element={<ReactionSpeed />} />
+          <Route path="/games/typing-speed" element={<TypingSpeedTest />} />
+          <Route path="/games/avoid-bombs" element={<AvoidTheBombs />} />
+          <Route path="/games/sequence-memory" element={<SequenceMemoryGame />} />
+          <Route path="/games/Word-Grid-Hunt" element={<WordGridHunt/>}/>
+          <Route path="/games/Sudoku" element={<Sudoku/>}/>
           
         </Route>     
         </Routes>
