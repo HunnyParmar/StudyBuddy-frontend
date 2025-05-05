@@ -97,28 +97,31 @@ export default function TypingSpeedTest() {
   const currentWord = words[currentWordIndex] || "";
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen p-6 bg-gray-100">
-      <h1 className="text-3xl font-bold mb-6">Typing Speed Test</h1>
+<div
+  className="flex flex-col items-center justify-center h-screen p-6 bg-cover bg-center bg-no-repeat"
+  style={{ backgroundImage: "url('/typingspeedgame.jpg')" }}
+>
+        <h1 className="text-5xl font-extrabold mb-8 bg-gradient-to-r from-white via-blue-400 to-blue-600 bg-clip-text text-transparent">Typing Speed Test</h1>
 
       {!hasStarted ? (
         <div className="flex flex-col items-center space-y-4">
-          <h2 className="text-xl font-semibold">Select Difficulty</h2>
+          <h2 className="text-xl font-semibold text-white mb-7 ">Select Difficulty</h2>
           <div className="flex space-x-4">
             <button
               onClick={() => handleDifficultySelect("easy")}
-              className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded"
+              className="bg-green-400 hover:bg-green-600 text-white py-2 px-4 rounded"
             >
               Easy
             </button>
             <button
               onClick={() => handleDifficultySelect("medium")}
-              className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded"
+              className="bg-yellow-400 hover:bg-yellow-600 text-white py-2 px-4 rounded"
             >
               Medium
             </button>
             <button
               onClick={() => handleDifficultySelect("hard")}
-              className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded"
+              className="bg-red-400 hover:bg-red-600 text-white py-2 px-4 rounded"
             >
               Hard
             </button>
@@ -127,20 +130,20 @@ export default function TypingSpeedTest() {
       ) : !isGameOver ? (
         <div>
           <div className="text-lg mb-4">
-            <p className="font-semibold">Time Left: {timeLeft}s</p>
-            <p className="font-semibold">Score: {score}</p>
-            <p className="font-semibold">WPM: {wpm}</p>
-            <p className="font-semibold">Accuracy: {accuracy}%</p>
+            <p className="font-semibold text-gray-400">Time Left: {timeLeft}s</p>
+            <p className="font-semibold text-gray-400">Score: {score}</p>
+            <p className="font-semibold text-gray-400">WPM: {wpm}</p>
+            <p className="font-semibold text-gray-400">Accuracy: {accuracy}%</p>
           </div>
 
           <div className="mb-4">
-            <p className="text-2xl font-semibold">Type the word below:</p>
-            <div className="text-4xl font-bold mt-2">{currentWord}</div>
+            <p className="text-2xl font-semibold text-blue-400">Type the word below:</p>
+            <div className="text-4xl font-bold mt-2 text-white">{currentWord}</div>
           </div>
 
           <input
             type="text"
-            className="text-xl p-2 border border-gray-400 rounded mt-4"
+            className="text-xl p-2 border border-gray-400 rounded mt-4 text-white"
             value={userInput}
             onChange={handleInputChange}
             autoFocus
@@ -150,10 +153,10 @@ export default function TypingSpeedTest() {
         </div>
       ) : (
         <div className="flex flex-col items-center">
-          <h2 className="text-2xl font-bold">Game Over!</h2>
-          <p className="text-lg font-semibold">Final Score: {score}</p>
-          <p className="text-lg font-semibold">WPM: {wpm}</p>
-          <p className="text-lg font-semibold">Accuracy: {accuracy}%</p>
+          <h2 className="text-2xl font-bold text-white">Game Over!</h2>
+          <p className="text-lg font-semibold text-gray-400 mt-5 ">Final Score: {score}</p>
+          <p className="text-lg font-semibold text-gray-400">WPM: {wpm}</p>
+          <p className="text-lg font-semibold text-gray-400 mb-5 ">Accuracy: {accuracy}%</p>
           <button
             onClick={() => {
               setHasStarted(false);

@@ -83,37 +83,45 @@ export default function ReactionSpeed() {
   }, [timeLeft]);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen p-6">
-      <h1 className="text-3xl font-bold mb-6">⚡ Box Clicker Challenge ⚡</h1>
+<div
+  className="flex flex-col items-center justify-center h-screen p-6 bg-cover bg-center"
+  style={{
+    backgroundImage: gameStarted
+      ? "url('/reactionspeed.jpg')" // image shown when game is running
+      : "url('/reactionspeed.jpg')", // image shown before starting
+  }}
+>      <h1 className="text-5xl font-extrabold mb-8 bg-gradient-to-r from-white via-blue-400 to-blue-600 bg-clip-text text-transparent">⚡ Box Clicker Challenge ⚡</h1>
 
       {/* Difficulty Selection */}
       {!gameStarted && (
-        <div className="mb-4">
-          <p className="mb-2">Select Difficulty:</p>
-          <select
-            onChange={(e) => setSelectedDifficulty(e.target.value)}
-            value={selectedDifficulty}
-            className="border py-2 px-4 rounded"
-          >
-            <option value="Slow">Slow</option>
-            <option value="Medium">Medium</option>
-            <option value="Fast">Fast</option>
-          </select>
-        </div>
+       <div className="mb-6 text-center text-white">
+       <p className="mb-7 text-lg font-semibold bg-gradient-to-r from-white to-blue-500 bg-clip-text text-transparent drop-shadow">
+         Select Difficulty:
+       </p>
+       <select
+         onChange={(e) => setSelectedDifficulty(e.target.value)}
+         value={selectedDifficulty}
+         className="py-2 px-4 rounded-lg bg-gradient-to-r from-blue-400 to-white text-blue-900 font-medium shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+       >
+         <option value="Slow">Slow</option>
+         <option value="Medium">Medium</option>
+         <option value="Fast">Fast</option>
+       </select>
+     </div>
+     
       )}
 
       {!gameStarted ? (
         <div>
-          <p className="mb-4">Click the green box as it moves!</p>
           <button
             onClick={startGame}
-            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+            className="py-2 px-4 rounded-lg bg-gradient-to-r from-blue-400 to-white text-blue-900 font-medium shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
           >
             Start Game
           </button>
         </div>
       ) : (
-        <div className="mb-6 text-lg font-semibold">
+        <div className="mb-6 text-lg text-white text-center font-semibold">
           <p>Time Left: {timeLeft}s</p>
           <p>Score: {score}</p>
         </div>
@@ -122,41 +130,35 @@ export default function ReactionSpeed() {
       {/* Box Area */}
       {gameStarted && timeLeft > 0 && (
         <div
-          className="relative bg-gray-200"
-          style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        className="grid grid-cols-3 gap-x-50 gap-y-13 justify-center pr-20"
+        style={{
+          width: `${boxSize * 3 + 16}px`, // 3 boxes + gaps
+          height: `${boxSize * 3 + 16}px`,
+        }}
+      >
           {/* Render boxes in a grid */}
           {[...Array(9)].map((_, index) => (
-            <div
-              key={index}
-              className="absolute"
-              style={{
-                left: `${(index % 3) * (window.innerWidth / 3)}px`,
-                top: `${Math.floor(index / 3) * (window.innerHeight / 3)}px`,
-                width: `${boxSize}px`,
-                height: `${boxSize}px`,
-                backgroundColor:
-                  index === currentBoxId ? "green" : "gray", // If box is the green one, color it green
-                cursor: "pointer",
-                borderRadius: "10px",
-              }}
-              onClick={() => handleBoxClick(index)} // Pass the box index to handle click
-            ></div>
-          ))}
-        </div>
+    <div
+      key={index}
+      className="flex items-center justify-center"
+      style={{
+        width: `${boxSize}px`,
+        height: `${boxSize}px`,
+        backgroundColor: index === currentBoxId ? "white" : "blue",
+        cursor: "pointer",
+        borderRadius: "20px",
+      }}
+      onClick={() => handleBoxClick(index)}
+    ></div>
+  ))}
+</div>
       )}
 
       {/* Game Over */}
       {timeLeft === 0 && (
-        <div className="mt-6">
-          <h2 className="text-2xl font-bold">Game Over!</h2>
-          <p className="text-lg font-semibold">Your final score: {score}</p>
+        <div className="mt-6 text-center">
+          <h2 className="text-white text-3xl font-bold">Game Over!</h2>
+          <p className="text-blue-300 text-1xl mt-5 font-semibold">Your final score: {score}</p>
           <button
             onClick={startGame}
             className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"

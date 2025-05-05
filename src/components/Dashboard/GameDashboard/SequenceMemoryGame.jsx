@@ -86,16 +86,28 @@ export default function SequenceMemoryGame() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
-      <h1 className="text-3xl font-bold mb-4">🧠 Sequence Memory Challenge</h1>
+    <div
+      className="flex flex-col items-center justify-center min-h-screen p-4"
+      style={{
+        backgroundImage: "url('/sequencegame.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundColor: "#001f3f",
+      }}
+    >
+      <h1 className="text-5xl font-extrabold mb-8 bg-gradient-to-r from-white via-blue-400 to-blue-600 bg-clip-text text-transparent">
+        Sequence Memory Challenge
+      </h1>
 
       {/* Mode Selection */}
       <div className="flex gap-3 mb-4">
         {["color", "number", "word"].map((m) => (
           <button
             key={m}
-            className={`px-4 py-2 rounded ${
-              mode === m ? "bg-blue-600 text-white" : "bg-white border"
+            className={`px-4 py-2 rounded font-semibold shadow-md transition ${
+              mode === m
+                ? "mt-4 mb-6 bg-gradient-to-r from-red-600 via-red-400 to-white text-white-500 font-semibold py-2 px-4 rounded transition-all duration-300 hover:from-red-500 hover:via-red-300 hover:to-white"
+                : "mt-4 mb-6 bg-gradient-to-r from-blue-400 via-blue-400 to-white text-white-500 font-semibold py-2 px-4 rounded transition-all duration-300 hover:from-red-500 hover:via-red-300 hover:to-white"
             }`}
             onClick={() => handleModeChange(m)}
           >
@@ -104,23 +116,25 @@ export default function SequenceMemoryGame() {
         ))}
       </div>
 
-      <p className="mb-4 text-lg font-medium">{message}</p>
+      <p className="mb-4 text-lg font-semibold text-white px-4 py-2 rounded">
+        {message}
+      </p>
 
       {/* Game Grid */}
       <div
-        className={`grid gap-4 mb-6 ${
+        className={`grid ${
           mode === "color" ? "grid-cols-3" : "grid-cols-4"
-        }`}
+        } gap-x-6 gap-y-4 mb-6`}
       >
         {items.map((item) => (
           <button
             key={item}
             id={item}
-            className={`w-20 h-20 rounded-md text-lg font-bold flex items-center justify-center
+            className={`w-20 h-20 rounded-md text-lg font-bold flex items-center justify-center transform transition duration-150
               ${
                 mode === "color"
                   ? `${getColorClass(item)} text-white`
-                  : "bg-white border border-gray-400 text-gray-800"
+                  : "bg-white/80 border border-gray-300 text-black shadow-md"
               }`}
             onClick={() => handleUserClick(item)}
           >
@@ -130,7 +144,7 @@ export default function SequenceMemoryGame() {
       </div>
 
       <button
-        className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded"
+        className="bg-blue-500 hover:bg-indigo-700 text-white font-semibold py-2 mt-3 px-6 rounded shadow-md"
         onClick={startGame}
         disabled={isGameActive && isUserTurn}
       >
@@ -142,14 +156,14 @@ export default function SequenceMemoryGame() {
 
 const getColorClass = (color) => {
   return {
-    red: "bg-red-500",
-    blue: "bg-blue-500",
-    green: "bg-green-500",
-    yellow: "bg-yellow-400",
-    orange: "bg-orange-500",
-    purple: "bg-purple-500",
-    pink: "bg-pink-400",
-    cyan: "bg-cyan-400",
-    lime: "bg-lime-400",
-  }[color] || "bg-gray-300";
+    red: "bg-red-400 shadow-md",
+    blue: "bg-blue-400 shadow-md",
+    green: "bg-green-400 shadow-md",
+    yellow: "bg-yellow-300 shadow-md",
+    orange: "bg-orange-400 shadow-md",
+    purple: "bg-purple-400 shadow-md",
+    pink: "bg-pink-300 shadow-md",
+    cyan: "bg-cyan-300 shadow-md",
+    lime: "bg-lime-300 shadow-md",
+  }[color] || "bg-gray-300 shadow-md";
 };

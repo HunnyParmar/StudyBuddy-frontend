@@ -69,15 +69,13 @@ export default function MemoryMatch() {
   }, []);
 
   return (
-    <div className="p-6 flex flex-col items-center">
-      <h1 className="text-3xl font-bold mb-6">🧠 Memory Match</h1>
-
-      <button
-        onClick={shuffleCards}
-        className="mb-6 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-      >
-        New Game
-      </button>
+    <div
+  className="p-6 flex flex-col items-center min-h-screen bg-cover bg-center"
+  style={{ backgroundImage: `url('/memorygame.png')` }}
+>
+<h1 className="text-6xl font-extrabold mb-8 bg-gradient-to-r from-white via-blue-400 to-blue-600 bg-clip-text text-transparent">
+  Memory Match
+</h1>
 
       <div className="grid grid-cols-4 gap-4 max-w-4xl">
         {cards.map((card) => (
@@ -91,7 +89,13 @@ export default function MemoryMatch() {
         ))}
       </div>
 
-      <p className="mt-6 text-lg font-semibold">Turns: {turns}</p>
+      <p className="text-white mt-6 text-lg font-semibold">Turns: {turns}</p>
+      <button
+        onClick={shuffleCards}
+        className="mt-4 mb-6 bg-gradient-to-r from-blue-800 via-blue-400 to-white text-gray-700 font-semibold py-2 px-4 rounded transition-all duration-300 hover:from-red-500 hover:via-red-300 hover:to-white"
+      >
+        New Game
+      </button>
     </div>
   );
 }
@@ -109,8 +113,7 @@ function CardComponent({ card, handleChoice, flipped, disabled }) {
         {flipped ? (
           <img src={card.src} alt="card front" className="w-full h-full object-cover rounded-lg" />
         ) : (
-          <img src="/images/images (2).jpeg" alt="card back" className="w-full h-full object-cover rounded-lg" />
-        )}
+          <div className="w-full h-full rounded-lg bg-gradient-to-br from-blue-400 via-white-900 to-blue"></div>        )}
       </div>
     </div>
   );

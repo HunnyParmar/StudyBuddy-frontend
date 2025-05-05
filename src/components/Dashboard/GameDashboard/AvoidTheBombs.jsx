@@ -16,7 +16,7 @@ function AvoidTheBombs() {
   const [time, setTime] = useState(0);
   const [timerStarted, setTimerStarted] = useState(false);
 
-  // Start timer
+  // Timer effect
   useEffect(() => {
     if (!timerStarted || gameOver) return;
     const interval = setInterval(() => setTime((t) => t + 1), 1000);
@@ -68,61 +68,68 @@ function AvoidTheBombs() {
   const { size } = difficulties[difficulty];
 
   return (
-    <div className="p-6 text-center">
-      <h1 className="text-2xl font-bold mb-4">💣 Avoid the Bombs</h1>
+    <div
+      className="min-h-screen bg-cover bg-center text-white"
+      style={{ backgroundImage: "url('/bombgame.jpg')", }}
+    >
+      <div className="p-6 text-center">
+        <h1 className="text-5xl font-extrabold mb-8 bg-gradient-to-r from-yellow-100 via-red-300 to-purple-600 bg-clip-text text-transparent">
+          💣 Avoid the Bombs
+        </h1>
 
-      <div className="mb-4">
-        <label className="mr-2 font-semibold">Difficulty:</label>
-        <select
-          value={difficulty}
-          onChange={(e) => setDifficulty(e.target.value)}
-          className="p-2 border rounded"
+        <div className="mb-4 text-lg">
+          <label className="mr-2 font-semibold">Difficulty:</label>
+          <select
+            value={difficulty}
+            onChange={(e) => setDifficulty(e.target.value)}
+            className="p-2 rounded text-white font-semibold border mr-5"
+          >
+            <option value="easy">Easy (5x5)</option>
+            <option value="medium">Medium (7x7)</option>
+            <option value="hard">Hard (10x10)</option>
+          </select>
+          <button
+            onClick={initializeGame}
+            className="ml-4 px-4 py-2 bg-pink-300 text-black rounded hover:bg-white"
+          >
+            Restart
+          </button>
+        </div>
+
+        <div className="mb-7 mt-7 font-small text-xl text-pink-100">
+          Time: {time}s| Safe Clicks: {score} | Bombs Left: {bombsLeft}
+        </div>
+
+        <div
+          className="grid gap-1 justify-center"
+          style={{ gridTemplateColumns: `repeat(${size}, 40px)` }}
         >
-          <option value="easy">Easy (5x5)</option>
-          <option value="medium">Medium (7x7)</option>
-          <option value="hard">Hard (10x10)</option>
-        </select>
-        <button
-          onClick={initializeGame}
-          className="ml-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          Restart
-        </button>
+          {grid.map((cell, index) => {
+            const isRevealed = revealed.has(index);
+            const className = `w-10 h-10 flex items-center justify-center border rounded ${
+              gameOver && cell.isBomb
+                ? "bg-red-600 text-white"
+                : isRevealed
+                ? "bg-pink-300 text-black"
+                : "bg-gray-200 hover:bg-gray-300 text-black"
+            }`;
+
+            return (
+              <div
+                key={index}
+                className={className}
+                onClick={() => handleClick(index)}
+              >
+                {gameOver && cell.isBomb ? "💣" : isRevealed ? "✓" : ""}
+              </div>
+            );
+          })}
+        </div>
+
+        {gameOver && (
+          <div className="mt-6 text-3xl font-bold text-red-400">Game Over!</div>
+        )}
       </div>
-
-      <div className="mb-4 font-medium text-lg">
-        ⏱️ Time: {time}s | ✅ Safe Clicks: {score} | 💣 Bombs Left: {bombsLeft}
-      </div>
-
-      <div
-        className="grid gap-1 justify-center"
-        style={{ gridTemplateColumns: `repeat(${size}, 40px)` }}
-      >
-        {grid.map((cell, index) => {
-          const isRevealed = revealed.has(index);
-          const className = `w-10 h-10 flex items-center justify-center border ${
-            gameOver && cell.isBomb
-              ? "bg-red-600 text-white"
-              : isRevealed
-              ? "bg-green-300"
-              : "bg-gray-200 hover:bg-gray-300"
-          }`;
-
-          return (
-            <div
-              key={index}
-              className={className}
-              onClick={() => handleClick(index)}
-            >
-              {gameOver && cell.isBomb ? "💣" : isRevealed ? "✓" : ""}
-            </div>
-          );
-        })}
-      </div>
-
-      {gameOver && (
-        <div className="mt-4 text-xl font-bold text-red-600">Game Over!</div>
-      )}
     </div>
   );
 }
