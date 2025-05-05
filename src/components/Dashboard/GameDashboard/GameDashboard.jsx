@@ -68,7 +68,7 @@ export default function GameDashboard() {
               transition={{ delay: i * 0.1 }}
             >
               <Link to={game.path}>
-                <div className="rounded-2xl overflow-hidden bg-black shadow-2xl shadow-blue-500/40 hover:shadow-blue-400 transition duration-300">
+                <div className="overflow-hidden bg-black shadow-2xl shadow-blue-500/40 hover:shadow-red-400 transition duration-300">
                   {/* Image Section */}
                   <div
                     className="w-[280px] h-[150px] bg-cover bg-center mx-auto mt-8 rounded-xl"
