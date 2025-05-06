@@ -91,39 +91,36 @@ const MessageInput = () => {
       )}
 
       <form onSubmit={handleSendMessage} className="flex items-center gap-2">
-        <div className="relative flex-1">
-          <input
-            type="text"
-            className="w-full input input-bordered rounded-lg input-sm sm:input-md pr-10"
-            placeholder="Type a message..."
-            value={text}
-            onChange={(e) => {
-              setText(e.target.value);
-              setShowEmojiPicker(false); // Close on typing
-            }}
-          />
+      <div className="relative flex-1">
+  <input
+    type="text"
+    className="w-full rounded-lg px-4 py-2 pr-10 border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-black dark:text-white placeholder-gray-500 dark:placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+    placeholder="Type a message..."
+    value={text}
+    onChange={(e) => {
+      setText(e.target.value);
+      setShowEmojiPicker(false); // Close on typing
+    }}
+  />
 
-          <button
-            type="button"
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-zinc-500"
-            onClick={() => setShowEmojiPicker((prev) => !prev)}
-          >
-            <Smile size={18} />
-          </button>
+  <button
+    type="button"
+    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-zinc-500"
+    onClick={() => setShowEmojiPicker((prev) => !prev)}
+  >
+    <Smile size={18} />
+  </button>
 
-          {showEmojiPicker && (
-            <div
-              ref={emojiPickerRef}
-              className="absolute bottom-full left-0 mb-2 z-50"
-            >
-              <EmojiPicker
-                onEmojiClick={onEmojiClick}
-                height={350}
-                
-              />
-            </div>
-          )}
-        </div>
+  {showEmojiPicker && (
+    <div
+      ref={emojiPickerRef}
+      className="absolute bottom-full left-0 mb-2 z-50"
+    >
+      <EmojiPicker onEmojiClick={onEmojiClick} height={350} />
+    </div>
+  )}
+</div>
+
 
         <input
           type="file"
