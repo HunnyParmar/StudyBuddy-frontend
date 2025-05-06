@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { IoChevronBackSharp } from "react-icons/io5";
 
 export default function TypingSpeedTest() {
   const [words, setWords] = useState([]);
@@ -101,6 +103,9 @@ export default function TypingSpeedTest() {
   className="flex flex-col items-center justify-center h-screen p-6 bg-cover bg-center bg-no-repeat"
   style={{ backgroundImage: "url('/typingspeedgame.jpg')" }}
 >
+<Link to="/games">
+        <IoChevronBackSharp className="text-[#0B192C] bg-white/80 p-1 text-4xl border-1 rounded-full fixed top-2 left-2 z-10" />
+      </Link>
         <h1 className="text-5xl font-extrabold mb-8 bg-gradient-to-r from-white via-blue-400 to-blue-600 bg-clip-text text-transparent">Typing Speed Test</h1>
 
       {!hasStarted ? (

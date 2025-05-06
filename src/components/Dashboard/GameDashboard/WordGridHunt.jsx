@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import wordsList from "./words.json";
+import { Link } from "react-router-dom";
+import { IoChevronBackSharp } from "react-icons/io5";
 
 const difficulties = {
   easy: { size: 8 },
@@ -113,6 +115,9 @@ const WordGridGame = () => {
       className="p-6 flex flex-col items-center min-h-screen bg-cover bg-center"
       style={{ backgroundImage: `url('/worldgridhuntgame.jpg')` }}
     >
+      <Link to="/games">
+        <IoChevronBackSharp className="text-[#0B192C] bg-white/80 p-1 text-4xl border-1 rounded-full fixed top-2 left-2 z-10" />
+      </Link>
       <h1 className="text-5xl font-extrabold mb-6 bg-gradient-to-r from-white via-purple-400 to-purple-700 bg-clip-text text-transparent">
         Word Grid Hunt
       </h1>

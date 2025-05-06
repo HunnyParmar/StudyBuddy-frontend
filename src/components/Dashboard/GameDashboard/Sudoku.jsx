@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./SudokuGame.css"; // optional if you're not fully using Tailwind
+import { Link } from "react-router-dom";
+import { IoChevronBackSharp } from "react-icons/io5";
 
 const initialPuzzle = [
   [5, 3, 0, 0, 7, 0, 0, 0, 0],
@@ -74,6 +76,9 @@ const SudokuGame = () => {
       className="min-h-screen flex flex-col items-center justify-center bg-cover bg-center px-4 py-8"
       style={{ backgroundImage: `url('/sudokugame.jpg')` }}
     >
+      <Link to="/games">
+        <IoChevronBackSharp className="text-[#0B192C] bg-white/80 p-1 text-4xl border-1 rounded-full fixed top-2 left-2 z-10" />
+      </Link>
       <h2 className="text-5xl font-extrabold mb-8 bg-gradient-to-r from-yellow-100 via-red-300 to-pink-500 bg-clip-text text-transparent">
         🧩 Sudoku Game
       </h2>

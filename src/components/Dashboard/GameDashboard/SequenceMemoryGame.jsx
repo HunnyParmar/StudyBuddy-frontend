@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { IoChevronBackSharp } from "react-icons/io5";
 
 const colorItems = ["red", "blue", "green", "yellow", "orange", "purple", "pink", "cyan", "lime"];
 const numberItems = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
@@ -95,6 +97,9 @@ export default function SequenceMemoryGame() {
         backgroundColor: "#001f3f",
       }}
     >
+      <Link to="/games">
+        <IoChevronBackSharp className="text-[#0B192C] bg-white/80 p-1 text-4xl border-1 rounded-full fixed top-2 left-2 z-10" />
+      </Link>
       <h1 className="text-5xl font-extrabold mb-8 bg-gradient-to-r from-white via-blue-400 to-blue-600 bg-clip-text text-transparent">
         Sequence Memory Challenge
       </h1>

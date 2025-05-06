@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { IoChevronBackSharp } from "react-icons/io5";
 
 const difficulties = {
   easy: { size: 5, bombs: 5 },
@@ -72,6 +74,9 @@ function AvoidTheBombs() {
       className="min-h-screen bg-cover bg-center text-white"
       style={{ backgroundImage: "url('/bombgame.jpg')", }}
     >
+      <Link to="/games">
+        <IoChevronBackSharp className="text-[#0B192C] bg-white/80 p-1 text-4xl border-1 rounded-full fixed top-2 left-2 z-10" />
+      </Link>
       <div className="p-6 text-center">
         <h1 className="text-5xl font-extrabold mb-8 bg-gradient-to-r from-yellow-100 via-red-300 to-purple-600 bg-clip-text text-transparent">
           💣 Avoid the Bombs

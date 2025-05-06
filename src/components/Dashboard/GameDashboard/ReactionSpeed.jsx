@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { IoChevronBackSharp } from "react-icons/io5";
 
 export default function ReactionSpeed() {
   const [boxPosition, setBoxPosition] = useState({ x: 0, y: 0 });
@@ -90,7 +92,11 @@ export default function ReactionSpeed() {
       ? "url('/reactionspeed.jpg')" // image shown when game is running
       : "url('/reactionspeed.jpg')", // image shown before starting
   }}
->      <h1 className="text-5xl font-extrabold mb-8 bg-gradient-to-r from-white via-blue-400 to-blue-600 bg-clip-text text-transparent">⚡ Box Clicker Challenge ⚡</h1>
+>  
+<Link to="/games">
+        <IoChevronBackSharp className="text-[#0B192C] bg-white/80 p-1 text-4xl border-1 rounded-full fixed top-2 left-2 z-10" />
+      </Link>
+    <h1 className="text-5xl font-extrabold mb-8 bg-gradient-to-r from-white via-blue-400 to-blue-600 bg-clip-text text-transparent">⚡ Box Clicker Challenge ⚡</h1>
 
       {/* Difficulty Selection */}
       {!gameStarted && (

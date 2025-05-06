@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { IoChevronBackSharp } from "react-icons/io5";
+
 
 const cardImages = [
   { src: "/images/1b3ca871504ea41d5490e0ab0b88a23a.jpg", matched: false },
@@ -73,6 +76,9 @@ export default function MemoryMatch() {
   className="p-6 flex flex-col items-center min-h-screen bg-cover bg-center"
   style={{ backgroundImage: `url('/memorygame.png')` }}
 >
+<Link to="/games">
+        <IoChevronBackSharp className="text-[#0B192C] bg-white/80 p-1 text-4xl border-1 rounded-full fixed top-2 left-2 z-10" />
+      </Link>
 <h1 className="text-6xl font-extrabold mb-8 bg-gradient-to-r from-white via-blue-400 to-blue-600 bg-clip-text text-transparent">
   Memory Match
 </h1>

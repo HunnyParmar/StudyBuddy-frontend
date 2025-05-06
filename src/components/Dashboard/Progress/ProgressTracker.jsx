@@ -302,9 +302,6 @@ const ProgressTracker = () => {
               <div className="flex-1">
                 <h3 className="text-xl font-bold mb-2">Keep up the great work!</h3>
                 <p className="mb-4">Consistent practice leads to mastery. You're making great progress in your learning journey!</p>
-                <button className="bg-white text-[#3DAA93] font-medium py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
-                  Continue Studying
-                </button>
               </div>
               <div className="mt-4 md:mt-0 md:ml-6">
                 <div className="text-5xl">
